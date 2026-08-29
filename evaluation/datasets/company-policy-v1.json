@@ -1,0 +1,70 @@
+{
+  "name": "Company policy interview baseline",
+  "version": "1.0.0",
+  "description": "Small human-reviewed baseline for retrieval, citations, required facts, and refusal behavior.",
+  "top_k": 3,
+  "corpus": [
+    {
+      "filename": "leave-policy.md",
+      "sha256": "bd4f41917c95203df1911a92d325136ab7ff617e39f98365eed51345b75b2ae5"
+    },
+    {
+      "filename": "security-policy.md",
+      "sha256": "2504230a30c604d402cbc041be98eb53d769979969cbfad755530b89d50c9f62"
+    },
+    {
+      "filename": "travel-policy.md",
+      "sha256": "6d0886baf1ceff3b367be4f82bc7c0b02c9e9aa8a76787ee31a7569f071bc213"
+    }
+  ],
+  "thresholds": {
+    "hit_rate_at_k": 0.8,
+    "mean_reciprocal_rank": 0.7,
+    "mean_ndcg_at_k": 0.7,
+    "citation_precision": 0.9,
+    "citation_recall": 0.8,
+    "answer_term_coverage": 0.75,
+    "refusal_accuracy": 0.9,
+    "grounded_answer_rate": 0.9
+  },
+  "cases": [
+    {
+      "id": "security-password-rotation",
+      "question": "SEC-104 对员工密码轮换有什么要求？",
+      "answerable": true,
+      "relevant_sources": ["security-policy.md"],
+      "required_answer_terms": [["SEC-104"], ["90", "九十"], ["密码"]],
+      "notes": "Verifies exact policy code and rotation interval."
+    },
+    {
+      "id": "security-remote-access",
+      "question": "员工远程访问公司系统需要满足什么认证要求？",
+      "answerable": true,
+      "relevant_sources": ["security-policy.md"],
+      "required_answer_terms": [["多因素", "multi-factor", "MFA"]],
+      "notes": "Verifies a semantic query without the source's exact English wording."
+    },
+    {
+      "id": "travel-expense-approval",
+      "question": "超过 200 元的差旅报销需要提供什么？",
+      "answerable": true,
+      "relevant_sources": ["travel-policy.md"],
+      "required_answer_terms": [["200", "二百"], ["收据", "receipt"], ["经理", "manager"]]
+    },
+    {
+      "id": "leave-entitlement",
+      "question": "全职员工每年有多少天带薪年假？",
+      "answerable": true,
+      "relevant_sources": ["leave-policy.md"],
+      "required_answer_terms": [["15", "十五"], ["年假", "annual leave"]]
+    },
+    {
+      "id": "unanswerable-catering",
+      "question": "公司周五下午茶的预算是多少？",
+      "answerable": false,
+      "relevant_sources": [],
+      "required_answer_terms": [],
+      "notes": "The corpus contains no catering policy, so the system must refuse."
+    }
+  ]
+}

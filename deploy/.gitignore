@@ -1,0 +1,5 @@
+production.env
+secrets/*
+!secrets/*.example
+backups/*
+!backups/.gitkeep

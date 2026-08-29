@@ -1,0 +1,150 @@
+name: enterprise-rag
+
+x-backend-image: &backend-image
+  image: ${RAG_BACKEND_IMAGE:-enterprise-rag-backend}:${RAG_IMAGE_TAG:-local}
+  build:
+    context: ../backend
+
+x-backend-environment: &backend-environment
+  env_file:
+    - production.env
+  secrets:
+    - database_password
+    - jwt_secret_key
+    - deepseek_api_key
+    - metrics_bearer_token
+  networks:
+    - backend
+  security_opt:
+    - no-new-privileges:true
+  cap_drop:
+    - ALL
+
+x-json-logging: &json-logging
+  driver: json-file
+  options:
+    max-size: 10m
+    max-file: "5"
+
+services:
+  database:
+    image: pgvector/pgvector:0.8.6-pg17-bookworm
+    environment:
+      POSTGRES_DB: ${RAG_DATABASE_NAME:-rag1}
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_admin_password
+      RAG_DATABASE_USER: ${RAG_DATABASE_USER:-rag_app}
+    secrets:
+      - postgres_admin_password
+      - database_password
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./postgres/init-app-role.sh:/docker-entrypoint-initdb.d/10-init-app-role.sh:ro
+    networks:
+      - backend
+    healthcheck:
+      test:
+        ["CMD-SHELL", "pg_isready -U postgres -d ${RAG_DATABASE_NAME:-rag1}"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    logging: *json-logging
+
+  migrate:
+    <<: [*backend-image, *backend-environment]
+    command: ["python", "-m", "alembic", "upgrade", "head"]
+    depends_on:
+      database:
+        condition: service_healthy
+    restart: "no"
+    read_only: true
+    tmpfs:
+      - /tmp
+    logging: *json-logging
+
+  backend:
+    <<: [*backend-image, *backend-environment]
+    depends_on:
+      database:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    volumes:
+      - object-storage:/app/data/objects
+    read_only: true
+    tmpfs:
+      - /tmp
+    restart: unless-stopped
+    logging: *json-logging
+
+  worker:
+    <<: [*backend-image, *backend-environment]
+    command:
+      [
+        "python",
+        "-m",
+        "app.cli.run_ingestion_worker",
+        "--poll-interval-seconds",
+        "2",
+        "--batch-size",
+        "10",
+      ]
+    depends_on:
+      database:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    volumes:
+      - object-storage:/app/data/objects
+    read_only: true
+    tmpfs:
+      - /tmp
+    restart: unless-stopped
+    logging: *json-logging
+
+  frontend:
+    image: ${RAG_FRONTEND_IMAGE:-enterprise-rag-frontend}:${RAG_IMAGE_TAG:-local}
+    build:
+      context: ../frontend
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      - "${RAG_HTTP_PORT:-8080}:8080"
+    networks:
+      - edge
+      - backend
+    read_only: true
+    tmpfs:
+      - /tmp
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    logging: *json-logging
+
+networks:
+  edge:
+  backend:
+    internal: true
+
+volumes:
+  postgres-data:
+  object-storage:
+
+secrets:
+  postgres_admin_password:
+    file: ./secrets/postgres_admin_password
+  database_password:
+    file: ./secrets/database_password
+  jwt_secret_key:
+    file: ./secrets/jwt_secret_key
+  deepseek_api_key:
+    file: ./secrets/deepseek_api_key
+  metrics_bearer_token:
+    file: ./secrets/metrics_bearer_token

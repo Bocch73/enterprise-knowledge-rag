@@ -1,0 +1,35 @@
+# Local secrets
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+*.egg-info/
+
+# Node.js
+node_modules/
+dist/
+coverage/
+
+# Editors and operating systems
+.idea/
+.vscode/*.local.json
+.DS_Store
+Thumbs.db
+
+# Locally downloaded development tools
+.tools/
+
+# Runtime data
+backend/data/
+logs/
+**/evaluation/reports/ci-*.json

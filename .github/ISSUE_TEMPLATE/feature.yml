@@ -1,0 +1,31 @@
+name: 功能需求
+description: 提出一个可验证的新功能
+title: "[Feature] "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: 业务问题
+      description: 谁遇到了什么问题？不要先写技术方案。
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: 期望结果
+      description: 完成后用户能够做什么？
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: 验收标准
+      description: 列出能够判断功能完成的具体条件。
+    validations:
+      required: true
+  - type: textarea
+    id: out_of_scope
+    attributes:
+      label: 不在本次范围内
+      description: 明确本任务不会顺便实现的内容。
