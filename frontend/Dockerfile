@@ -8,7 +8,7 @@ RUN npm ci
 COPY . .
 RUN npm run build
 
-FROM nginx:1.28.3-alpine AS runtime
+FROM nginx:1.31.4-alpine AS runtime
 
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY --from=frontend-builder --chown=101:101 /build/dist /usr/share/nginx/html
