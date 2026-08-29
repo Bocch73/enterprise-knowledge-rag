@@ -239,7 +239,7 @@ powershell -ExecutionPolicy Bypass -File .\scripts\verify-deployment.ps1
 
 本次已经验证：
 
-- 16 个部署专项测试全部通过；
+- 17 个部署专项测试全部通过；
 - GitHub Actions、Dependabot 和 Compose 共 5 份 YAML 通过 Prettier 解析；
 - 生产配置会拒绝开启交互文档；
 - 启用指标时生产配置会拒绝缺少监控令牌；
@@ -263,7 +263,7 @@ powershell -ExecutionPolicy Bypass -File .\scripts\verify-deployment.ps1
 - 团队环境要求至少一名其他成员批准；
 - 生产 environment 要求指定批准者，并限制允许部署的版本标签。
 
-个人面试项目无法真正完成“他人审查”，应诚实说明使用自查清单代替，而不是虚构审查人。
+当前仓库主要由单一维护者开发，暂时使用自查清单；引入协作者后应启用至少一名其他成员批准。
 
 ## 16. 当前限制
 
@@ -275,7 +275,7 @@ powershell -ExecutionPolicy Bypass -File .\scripts\verify-deployment.ps1
 6. 对象文件使用本地卷，没有实现对象存储跨机容灾。
 7. 备份和恢复脚本已经提供，但本步没有擅自复制或恢复你的数据库。
 
-这些限制会保留在面试说明中，避免把“生产式设计”包装成“已经生产运行”。
+这些限制会保留在项目文档中，避免把“生产式设计”表述成“已经生产运行”。
 
 ### 首次远程运行复盘
 

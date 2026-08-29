@@ -17,8 +17,7 @@ $requiredFiles = @(
     'docs\architecture\decisions\0003-hybrid-retrieval.md',
     'docs\architecture\decisions\0004-model-provider-abstraction.md',
     'docs\architecture\decisions\0005-asynchronous-ingestion.md',
-    'docs\steps\03-requirements-and-architecture-summary.md',
-    'docs\interview\03-requirements-and-architecture.md'
+    'docs\steps\03-requirements-and-architecture-summary.md'
 )
 
 $missingFiles = @()

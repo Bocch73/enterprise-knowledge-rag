@@ -271,7 +271,7 @@ cd .\backend
 - [Ragas：基于来源标识符的上下文精确率](https://github.com/vibrantlabsai/ragas/blob/main/docs/concepts/metrics/available_metrics/context_precision.md)
 - [DeepSeek API 文档](https://api-docs.deepseek.com/)
 
-本项目参考这些指标思想，但为了让面试时能够解释每个公式，核心指标使用少量 Python 自行实现，
+本项目参考这些指标思想，同时为了让公式保持透明和可复查，核心指标使用少量 Python 自行实现，
 没有把分数计算委托给黑盒评测模型。
 
 ## 16. 本步知识点总结

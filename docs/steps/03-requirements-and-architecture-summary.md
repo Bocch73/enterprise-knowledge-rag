@@ -50,7 +50,6 @@
 - [系统总体架构](../architecture/system-architecture.md)
 - [技术栈与职责](../architecture/technology-stack.md)
 - [架构决策记录](../architecture/decisions/README.md)
-- [第 3 步面试题](../interview/03-requirements-and-architecture.md)
 
 ## 官方资料
 
