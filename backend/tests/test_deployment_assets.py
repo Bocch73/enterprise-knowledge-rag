@@ -1,5 +1,7 @@
 """Static deployment contracts that do not require Docker on the developer machine."""
 
+import re
+import tomllib
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -7,6 +9,30 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 def read_project_file(relative_path: str) -> str:
     return (PROJECT_ROOT / relative_path).read_text(encoding="utf-8")
+
+
+def dependency_names(requirement_text: str) -> set[str]:
+    names: set[str] = set()
+    for line in requirement_text.splitlines():
+        stripped = line.strip()
+        if not stripped or stripped.startswith(("#", "-r ")):
+            continue
+        name = re.split(r"[\[<>=!~ ]", stripped, maxsplit=1)[0]
+        names.add(name.lower().replace("_", "-"))
+    return names
+
+
+def test_runtime_dependency_sources_and_lock_stay_aligned() -> None:
+    project_configuration = tomllib.loads(read_project_file("backend/pyproject.toml"))
+    declared_dependencies = {
+        re.split(r"[\[<>=!~ ]", dependency, maxsplit=1)[0].lower().replace("_", "-")
+        for dependency in project_configuration["project"]["dependencies"]
+    }
+    runtime_input = dependency_names(read_project_file("backend/requirements.in"))
+    runtime_lock = dependency_names(read_project_file("backend/requirements.lock"))
+
+    assert declared_dependencies == runtime_input
+    assert declared_dependencies <= runtime_lock
 
 
 def test_continuous_integration_uses_isolated_real_dependencies() -> None:

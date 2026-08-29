@@ -52,6 +52,8 @@ idna==3.19
     #   anyio
     #   email-validator
     #   httpx
+lxml==6.1.2
+    # via python-docx
 mako==1.4.1
     # via alembic
 markupsafe==3.0.3
@@ -78,6 +80,10 @@ pydantic-settings==2.15.0
     # via -r requirements.in
 pyjwt==2.13.0
     # via -r requirements.in
+pypdf==6.16.1
+    # via -r requirements.in
+python-docx==1.2.0
+    # via -r requirements.in
 python-dotenv==1.2.3
     # via
     #   pydantic-settings
@@ -100,6 +106,7 @@ typing-extensions==4.16.0
     #   psycopg
     #   pydantic
     #   pydantic-core
+    #   python-docx
     #   sqlalchemy
     #   starlette
     #   typing-inspection
