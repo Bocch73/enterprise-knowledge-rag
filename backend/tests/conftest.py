@@ -43,10 +43,12 @@ def settings(test_database_url: str, tmp_path: Path) -> Settings:
         environment="test",
         debug=False,
         log_level="CRITICAL",
+        docs_enabled=True,
         database_url=test_database_url,
         test_database_url=test_database_url,
         jwt_secret_key=SecretStr("test-only-secret-key-with-more-than-32-characters"),
         object_storage_path=tmp_path / "objects",
+        metrics_bearer_token=None,
     )
 
 
