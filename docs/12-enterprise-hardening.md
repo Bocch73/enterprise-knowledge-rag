@@ -74,6 +74,16 @@
 
 Python 客户端的 Summary 类型不在客户端计算分位数，所以需要聚合第 95 百分位时选择 Histogram。
 
+外部模型还暴露四组低基数指标：
+
+- `rag_external_model_calls_total`：按操作、提供商、模型和成功/失败结果累计调用；
+- `rag_external_model_retries_total`：累计有限重试次数；
+- `rag_external_model_call_duration_seconds`：包含重试在内的调用延迟直方图；
+- `rag_external_model_estimated_cost_total`：按提供商、模型和币种累计估算费用。
+
+Prometheus 中最近 5 分钟的失败率可用“失败调用速率 ÷ 全部调用速率”计算。调用编号不能作为指标标签，
+否则会产生高基数；它只进入内容无关的有界调用账本和评测报告。
+
 ### 3.5 高基数标签
 
 指标标签用于按方法、路由、状态或供应商分类。**高基数**表示一个字段可能产生大量不同值，例如用户
@@ -243,21 +253,23 @@ powershell -ExecutionPolicy Bypass -File .\scripts\verify-backend.ps1
 
 当前真实结果：
 
-- 后端 96 个测试全部通过；
-- 分支覆盖率 83.93%，高于 80% 门槛；
+- 后端 119 个测试全部通过；
+- 分支覆盖率 82.56%，高于 80% 门槛；
 - Ruff 代码规范和格式检查通过；
 - Mypy 严格类型检查通过；
 - Alembic 没有发现数据库结构漂移；
 - 依赖锁文件已包含 `prometheus-client==0.26.0`。
 
-测试覆盖缓存过期和淘汰、并发填充、限流窗口与响应头、指标认证与受控标签、模型成功和失败计数、
-审计持久化与过滤、普通用户拒绝、任务队列查询和安全响应头。
+测试覆盖缓存过期和淘汰、并发填充、限流窗口与响应头、指标认证与受控标签、外部模型成功/失败计数、
+有限重试、熔断和费用计算，以及审计持久化、权限、任务队列和安全响应头。
 
 ## 12. 关键实现文件
 
 - `backend/app/modules/operations/rate_limit.py`：限流器和限流中间件。
 - `backend/app/modules/operations/cache.py`：带过期、容量和淘汰策略的向量缓存。
 - `backend/app/modules/operations/metrics.py`：Prometheus 指标注册与记录。
+- `backend/app/modules/operations/resilience.py`：有限重试和进程内熔断器。
+- `backend/app/modules/operations/model_usage.py`：有界、无提示词内容的外部调用账本。
 - `backend/app/modules/operations/router.py`：指标和管理员任务队列接口。
 - `backend/app/modules/audit/`：审计表、写入服务、中间件和管理员查询。
 - `backend/alembic/versions/20260828_0006_runtime_hardening.py`：数据库迁移。

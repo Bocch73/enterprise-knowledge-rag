@@ -36,6 +36,8 @@ class HybridSearchResultResponse(BaseModel):
     vector_distance: float | None
     keyword_rank: int | None
     keyword_score: float | None
+    rerank_rank: int | None
+    rerank_score: float | None
 
     @classmethod
     def from_fused(cls, item: FusedCandidate) -> "HybridSearchResultResponse":
@@ -56,12 +58,18 @@ class HybridSearchResultResponse(BaseModel):
             vector_distance=item.vector_distance,
             keyword_rank=item.keyword_rank,
             keyword_score=item.keyword_score,
+            rerank_rank=item.rerank_rank,
+            rerank_score=item.rerank_score,
         )
 
 
 class HybridSearchResponse(BaseModel):
     knowledge_base_id: UUID
     query: str
-    retrieval_method: str = "hybrid_reciprocal_rank_fusion"
+    retrieval_method: str = "hybrid_reciprocal_rank_fusion_with_rerank"
     embedding_model: str
+    rerank_model: str
+    evidence_sufficient: bool
+    evidence_threshold: float
+    top_rerank_score: float | None
     results: list[HybridSearchResultResponse]

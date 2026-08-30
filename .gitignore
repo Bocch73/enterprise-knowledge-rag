@@ -32,4 +32,5 @@ Thumbs.db
 # Runtime data
 backend/data/
 logs/
+.dev-runtime/
 **/evaluation/reports/ci-*.json

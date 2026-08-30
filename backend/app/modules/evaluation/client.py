@@ -76,6 +76,14 @@ class EvaluationApiClient:
             sources=sources,
             retrieval_method=retrieval_method,
             embedding_model=embedding_model,
+            rerank_model=str(payload.get("rerank_model", "unconfigured")),
+            evidence_sufficient=bool(payload.get("evidence_sufficient", bool(results))),
+            evidence_threshold=float(payload.get("evidence_threshold", 0.0)),
+            top_rerank_score=(
+                float(payload["top_rerank_score"])
+                if payload.get("top_rerank_score") is not None
+                else None
+            ),
         )
 
     def answer(self, knowledge_base_id: str, question: str, top_k: int) -> AnswerObservation:

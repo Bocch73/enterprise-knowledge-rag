@@ -231,7 +231,28 @@ cd "E:\codex项目\rag1\backend"
 6. 开发代理只监听 `127.0.0.1`，不默认暴露到局域网。
 7. 生产环境仍需内容安全策略、加密连接、安全 Cookie 评估和依赖供应链扫描。
 
-## 10. 三个终端启动完整系统
+## 10. 启动完整系统
+
+### 推荐方式：统一管理三个独立进程
+
+在项目根目录运行：
+
+```powershell
+cd "E:\codex项目\rag1"
+powershell -ExecutionPolicy Bypass -File .\scripts\dev-services.ps1 -Action Start
+```
+
+查看状态或统一停止：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\dev-services.ps1 -Action Status
+powershell -ExecutionPolicy Bypass -File .\scripts\dev-services.ps1 -Action Stop
+```
+
+统一入口只负责管理生命周期，后端接口、前端页面与持续文档处理仍是三个独立进程。进程编号、启动检查、
+日志位置和故障处理见[本地多进程运行手册](operations/local-development.md)。
+
+### 手动方式：使用三个终端
 
 ### 终端一：后端
 
@@ -253,11 +274,11 @@ powershell -ExecutionPolicy Bypass -File .\scripts\start-frontend.ps1
 
 ### 终端三：文档处理
 
-上传文件后执行：
+持续运行：
 
 ```powershell
 cd "E:\codex项目\rag1\backend"
-.\.venv\Scripts\python.exe -m app.cli.process_ingestion_jobs --max-jobs 10
+.\.venv\Scripts\python.exe -m app.cli.run_ingestion_worker
 ```
 
 页面会自动查询进度。文档完成后，在右侧输入问题并展开来源。
@@ -265,12 +286,13 @@ cd "E:\codex项目\rag1\backend"
 ## 11. 自动化验证结果
 
 - npm 官方注册表审计：391 个安装包，0 个已知漏洞。
-- Vitest：12 个单元和组件测试全部通过。
+- Vitest：14 个单元和组件测试全部通过。
 - 关键网络与登录逻辑覆盖率：语句 94.33%、分支 80%、函数 100%、行 100%。
 - Playwright：2 个 Chrome 端到端流程全部通过。
 - Prettier、Oxlint、ESLint 和 `vue-tsc` 严格类型检查通过。
-- Vite 生产构建成功，41 个模块完成转换。
-- 主入口 JavaScript 约 100.71 KB，gzip 压缩后约 39.67 KB。
+- Vite 生产构建成功，45 个模块完成转换。
+- 工作台拆分为概览、知识库、文档中心和问答实验室四个一级页面，设计说明见[分层知识工作台](product-workspace.md)。
+- 主入口 JavaScript 约 102.08 KB，gzip 压缩后约 40.12 KB。
 - 登录、1440 像素工作台和 390 像素手机布局均完成截图检查。
 - 真实前端代理到 FastAPI 存活检查返回 HTTP 200。
 

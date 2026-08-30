@@ -36,6 +36,10 @@ class CountingEmbeddingProvider:
         self.calls += 1
         return [[float(len(text)), 1.0] for text in texts]
 
+    async def embed_query(self, text: str) -> list[float]:
+        self.calls += 1
+        return [float(len(text)), 2.0]
+
 
 def test_embedding_cache_hits_expires_and_evicts_without_aliasing() -> None:
     now = [100.0]
@@ -85,6 +89,26 @@ def test_embedding_cache_validates_bounds_and_provider_batches() -> None:
             await provider.embed_documents(["alpha"])
 
     asyncio.run(scenario())
+
+
+def test_embedding_cache_separates_query_and_document_vectors() -> None:
+    async def scenario() -> tuple[list[float], list[float], int]:
+        delegate = CountingEmbeddingProvider()
+        provider = CachingEmbeddingProvider(
+            delegate,
+            TTLVectorCache(max_entries=4, ttl_seconds=10),
+            OperationsMetrics(),
+        )
+        document = (await provider.embed_documents(["alpha"]))[0]
+        query = await provider.embed_query("alpha")
+        await provider.embed_query("alpha")
+        return document, query, delegate.calls
+
+    document, query, calls = asyncio.run(scenario())
+
+    assert document == [5.0, 1.0]
+    assert query == [5.0, 2.0]
+    assert calls == 2
 
 
 def test_fixed_window_rate_limiter_resets_after_window() -> None:

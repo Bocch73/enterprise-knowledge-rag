@@ -52,6 +52,31 @@ class OperationsMetrics:
             buckets=(0.1, 0.25, 0.5, 1, 2.5, 5, 10, 20, 30, 60, 120),
             registry=self.registry,
         )
+        self.external_model_calls = Counter(
+            "rag_external_model_calls_total",
+            "External model calls by operation, provider, model, and outcome.",
+            ("operation", "provider", "model", "outcome"),
+            registry=self.registry,
+        )
+        self.external_model_retries = Counter(
+            "rag_external_model_retries_total",
+            "Retry attempts for temporary external-model failures.",
+            ("operation", "provider", "model"),
+            registry=self.registry,
+        )
+        self.external_model_duration = Histogram(
+            "rag_external_model_call_duration_seconds",
+            "External model call duration including retries.",
+            ("operation", "provider", "model"),
+            buckets=(0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10, 20, 30, 60, 120),
+            registry=self.registry,
+        )
+        self.external_model_cost = Counter(
+            "rag_external_model_estimated_cost_total",
+            "Estimated external model cost using configured price snapshots.",
+            ("provider", "model", "currency"),
+            registry=self.registry,
+        )
         self.ingestion_jobs = Gauge(
             "rag_ingestion_jobs",
             "Current ingestion jobs by status.",
@@ -84,6 +109,42 @@ class OperationsMetrics:
     def observe_model(self, provider: str, outcome: str, duration_seconds: float) -> None:
         self.model_calls.labels(provider=provider, outcome=outcome).inc()
         self.model_duration.labels(provider=provider).observe(duration_seconds)
+
+    def observe_external_model(
+        self,
+        *,
+        operation: str,
+        provider: str,
+        model: str,
+        outcome: str,
+        duration_seconds: float,
+        estimated_cost: float | None = None,
+        currency: str | None = None,
+    ) -> None:
+        self.external_model_calls.labels(
+            operation=operation,
+            provider=provider,
+            model=model,
+            outcome=outcome,
+        ).inc()
+        self.external_model_duration.labels(
+            operation=operation,
+            provider=provider,
+            model=model,
+        ).observe(duration_seconds)
+        if estimated_cost is not None and currency is not None:
+            self.external_model_cost.labels(
+                provider=provider,
+                model=model,
+                currency=currency,
+            ).inc(estimated_cost)
+
+    def observe_external_retry(self, *, operation: str, provider: str, model: str) -> None:
+        self.external_model_retries.labels(
+            operation=operation,
+            provider=provider,
+            model=model,
+        ).inc()
 
     def set_ingestion_jobs(self, counts: dict[str, int]) -> None:
         for status in ("queued", "running", "completed", "failed"):

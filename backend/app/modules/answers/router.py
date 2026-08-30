@@ -14,6 +14,7 @@ from app.modules.generation.providers import GenerationProvider
 from app.modules.identity.dependencies import CurrentUserDependency, SessionDependency
 from app.modules.indexing.providers import EmbeddingProvider
 from app.modules.operations.metrics import OperationsMetrics
+from app.modules.retrieval.providers import RerankProvider
 
 router = APIRouter()
 
@@ -54,6 +55,7 @@ async def _create_answer(
 ) -> GroundedAnswerResponse:
     settings: Settings = request.app.state.settings
     embedding_provider: EmbeddingProvider = request.app.state.embedding_provider
+    rerank_provider: RerankProvider = request.app.state.rerank_provider
     generation_provider: GenerationProvider = request.app.state.generation_provider
     operations_metrics: OperationsMetrics = request.app.state.operations_metrics
     return await create_grounded_answer(
@@ -64,8 +66,10 @@ async def _create_answer(
         top_k=data.top_k,
         candidate_limit=settings.retrieval_candidate_limit,
         rank_constant=settings.retrieval_rrf_k,
+        evidence_min_score=settings.retrieval_evidence_min_score,
         context_max_characters=settings.answer_context_max_characters,
         embedding_provider=embedding_provider,
+        rerank_provider=rerank_provider,
         generation_provider=generation_provider,
         operations_metrics=operations_metrics,
     )

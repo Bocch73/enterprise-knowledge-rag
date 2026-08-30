@@ -47,6 +47,13 @@ class DocumentChunk(UUIDPrimaryKeyMixin, TimestampMixin, Base):
             "search_vector",
             postgresql_using="gin",
         ),
+        Index(
+            "ix_document_chunks_embedding_hnsw",
+            "embedding",
+            postgresql_using="hnsw",
+            postgresql_ops={"embedding": "vector_cosine_ops"},
+            postgresql_with={"m": 16, "ef_construction": 64},
+        ),
     )
 
     document_version_id: Mapped[UUID] = mapped_column(

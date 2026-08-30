@@ -75,9 +75,9 @@ Reciprocal Rank Fusion，常简称 RRF。对于某一路的第 `rank` 名，贡�
 | 同义表达、自然语言改写 | 真实语义模型通常更强 | 可能因词语不同而漏掉 |
 | 制度编号、产品型号 | 可能把精确字符串弱化 | 精确词项通常更强 |
 | 人名、缩写 | 取决于模型训练 | 原文出现时稳定 |
-| 当前本地确定性向量 | 主要反映词语与字符重合 | 提供真实 PostgreSQL 关键词基线 |
+| 当前 Qwen 语义向量 | 理解同义表达和自然语言改写 | 补充精确词项匹配能力 |
 
-因此当前链路已经真实实现两路查询和融合，但只有接入真实语义向量模型并完成评测后，才能证明同义表达召回能力。
+当前链路已接入 `qwen3.7-text-embedding`：两路召回经过倒数排名融合后，`qwen3-rerank` 会同时阅读问题和候选原文并重新排序。真实固定评测用于验证同义改写召回能力，不能仅凭模型名称作结论。
 
 ## 4. 最新成功版本规则
 
@@ -148,6 +148,11 @@ Content-Type: application/json
 - `vector_distance`：余弦距离，越小越相近。
 - `keyword_rank`：关键词路线名次。
 - `keyword_score`：PostgreSQL 全文相关性分数。
+- `rerank_rank`：Qwen 重排后的名次。
+- `rerank_score`：当前问题与候选证据的重排相关分数；只应在同一次请求内比较。
+- `evidence_sufficient`：最高重排分数是否达到当前证据阈值。
+- `evidence_threshold` 与 `top_rerank_score`：本次判断使用的阈值和最高分，便于解释拒答。
+- `rerank_request_id`：提供商调用编号，便于故障和账单排查。
 - 文档、版本、片段编号和原文位置：用于后续生成可靠引用。
 
 ## 8. 亲手体验
@@ -210,6 +215,8 @@ LIMIT 20;
 - [PostgreSQL 17 广义倒排索引](https://www.postgresql.org/docs/17/gin.html)
 - [pgvector 官方查询与混合检索](https://github.com/pgvector/pgvector#hybrid-search)
 - [倒数排名融合原始论文](https://cormack.uwaterloo.ca/cormacksigir09-rrf.pdf)
+- [阿里云百炼文本向量接口](https://help.aliyun.com/zh/model-studio/embedding?disableWebsiteRedirect=true)
+- [阿里云百炼文本重排接口](https://help.aliyun.com/zh/model-studio/text-rerank-api)
 
 ## 11. 本步完成标准
 
@@ -218,6 +225,7 @@ LIMIT 20;
 - [x] 存储生成的全文搜索列和广义倒排索引。
 - [x] 安全的普通用户查询解析。
 - [x] 倒数排名融合与透明分数。
+- [x] Qwen 语义向量、Qwen 重排和证据充分性字段。
 - [x] 最新成功版本选择。
 - [x] 查看者检索和跨知识库隔离。
 - [x] 特殊字符、版本切换和融合排序测试。

@@ -14,6 +14,7 @@ from app.modules.evaluation.schemas import (
     EvaluationCaseResult,
     EvaluationDataset,
     EvaluationReport,
+    ExperimentConfiguration,
     GateCheck,
     QualityGate,
     SearchObservation,
@@ -32,11 +33,14 @@ def run_evaluation(
     knowledge_base_id: str,
     *,
     mode: Literal["retrieval", "full"] = "retrieval",
+    experiment_configuration: ExperimentConfiguration | None = None,
 ) -> EvaluationReport:
     """Execute cases sequentially so latency and provider load stay interpretable."""
     results: list[EvaluationCaseResult] = []
     retrieval_method: str | None = None
     embedding_model: str | None = None
+    rerank_model: str | None = None
+    generation_model: str | None = None
     for case in dataset.cases:
         retrieval_started = perf_counter()
         search = client.search(knowledge_base_id, case.question, dataset.top_k)
@@ -44,8 +48,11 @@ def run_evaluation(
         if retrieval_method is None:
             retrieval_method = search.retrieval_method
             embedding_model = search.embedding_model
+            rerank_model = search.rerank_model
         elif (
-            retrieval_method != search.retrieval_method or embedding_model != search.embedding_model
+            retrieval_method != search.retrieval_method
+            or embedding_model != search.embedding_model
+            or rerank_model != search.rerank_model
         ):
             raise RuntimeError("retrieval configuration changed during one evaluation run")
         retrieval = (
@@ -63,6 +70,13 @@ def run_evaluation(
             answerable=case.answerable,
             relevant_sources=case.relevant_sources,
             retrieved_sources=search.sources,
+            rerank_model=search.rerank_model,
+            evidence_sufficient=search.evidence_sufficient,
+            evidence_threshold=search.evidence_threshold,
+            top_rerank_score=search.top_rerank_score,
+            evidence_decision_correct=(
+                1.0 if search.evidence_sufficient == case.answerable else 0.0
+            ),
             retrieval_latency_ms=round(retrieval_latency_ms, 3),
             retrieval=retrieval,
         )
@@ -75,6 +89,10 @@ def run_evaluation(
             result.refused = observation.refused
             result.cited_sources = observation.cited_sources
             result.model = observation.model
+            if generation_model is None:
+                generation_model = observation.model
+            elif generation_model != observation.model:
+                raise RuntimeError("generation model changed during one evaluation run")
             result.answer_scores = answer_scores(
                 answer=observation.answer,
                 refused=observation.refused,
@@ -98,6 +116,9 @@ def run_evaluation(
         top_k=dataset.top_k,
         retrieval_method=_required_text(retrieval_method),
         embedding_model=_required_text(embedding_model),
+        rerank_model=_required_text(rerank_model),
+        generation_model=generation_model,
+        experiment_configuration=experiment_configuration,
         aggregate=aggregate,
         quality_gate=quality_gate,
         cases=results,
@@ -119,6 +140,8 @@ def _aggregate(
         result.answer_latency_ms for result in results if result.answer_latency_ms is not None
     ]
     include_answers = mode == "full"
+    answerable = [result for result in results if result.answerable]
+    unanswerable = [result for result in results if not result.answerable]
     return AggregateScores(
         evaluated_cases=len(results),
         answerable_cases=len(retrieval),
@@ -129,6 +152,15 @@ def _aggregate(
         mean_ndcg_at_k=mean([score.ndcg_at_k for score in retrieval]),
         retrieval_latency_p50_ms=percentile(retrieval_latencies, 0.50),
         retrieval_latency_p95_ms=percentile(retrieval_latencies, 0.95),
+        evidence_sufficiency_accuracy=mean(
+            [result.evidence_decision_correct for result in results]
+        ),
+        answerable_acceptance_rate=mean(
+            [1.0 if result.evidence_sufficient else 0.0 for result in answerable]
+        ),
+        unanswerable_rejection_rate=mean(
+            [1.0 if not result.evidence_sufficient else 0.0 for result in unanswerable]
+        ),
         citation_precision=mean([score.citation_precision for score in answer])
         if include_answers
         else None,
@@ -162,6 +194,16 @@ def _quality_gate(
             thresholds.mean_reciprocal_rank,
         ),
         ("mean_ndcg_at_k", aggregate.mean_ndcg_at_k, thresholds.mean_ndcg_at_k),
+        (
+            "evidence_sufficiency_accuracy",
+            aggregate.evidence_sufficiency_accuracy,
+            thresholds.evidence_sufficiency_accuracy,
+        ),
+        (
+            "unanswerable_rejection_rate",
+            aggregate.unanswerable_rejection_rate,
+            thresholds.unanswerable_rejection_rate,
+        ),
     ]
     if mode == "full":
         metric_pairs.extend(

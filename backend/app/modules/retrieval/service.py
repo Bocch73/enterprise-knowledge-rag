@@ -1,5 +1,6 @@
-"""Latest-version vector and keyword retrieval with resource authorization."""
+"""Authorized hybrid retrieval, semantic reranking, and evidence gating."""
 
+from dataclasses import dataclass, replace
 from uuid import UUID
 
 from sqlalchemy import func, literal_column, select
@@ -7,10 +8,15 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.sql.elements import ColumnElement
 from sqlalchemy.sql.selectable import Subquery
 
+from app.core.errors import AppError
 from app.modules.documents.models import Document, DocumentVersion
 from app.modules.identity.models import User
 from app.modules.indexing.models import DocumentChunk
-from app.modules.indexing.providers import EMBEDDING_DIMENSIONS, EmbeddingProvider
+from app.modules.indexing.providers import (
+    EMBEDDING_DIMENSIONS,
+    EmbeddingProvider,
+    EmbeddingProviderError,
+)
 from app.modules.ingestion.models import IngestionJob
 from app.modules.knowledge_bases.service import get_accessible_knowledge_base
 from app.modules.retrieval.fusion import (
@@ -19,6 +25,16 @@ from app.modules.retrieval.fusion import (
     RetrievalCandidate,
     reciprocal_rank_fusion,
 )
+from app.modules.retrieval.providers import RerankProvider, RerankProviderError
+
+
+@dataclass(frozen=True, slots=True)
+class RetrievalOutcome:
+    candidates: list[FusedCandidate]
+    rerank_model: str
+    rerank_request_id: str | None
+    top_rerank_score: float | None
+    evidence_sufficient: bool
 
 
 def _latest_completed_versions() -> Subquery:
@@ -132,21 +148,34 @@ async def hybrid_search(
     candidate_limit: int,
     rank_constant: int,
     embedding_provider: EmbeddingProvider,
-) -> list[FusedCandidate]:
+    rerank_provider: RerankProvider,
+    evidence_min_score: float,
+) -> RetrievalOutcome:
     """Search only one authorized knowledge base and its latest completed versions."""
     await get_accessible_knowledge_base(session, user, knowledge_base_id)
-    embeddings = await embedding_provider.embed_documents([query])
+    try:
+        query_embedding = await embedding_provider.embed_query(query)
+    except EmbeddingProviderError as exception:
+        unavailable_codes = {
+            "embedding_authentication_failed",
+            "embedding_provider_unavailable",
+            "embedding_rate_limited",
+        }
+        raise AppError(
+            code=exception.code,
+            message=exception.message,
+            status_code=503 if exception.code in unavailable_codes else 502,
+        ) from exception
     if (
-        len(embeddings) != 1
-        or embedding_provider.dimensions != EMBEDDING_DIMENSIONS
-        or len(embeddings[0]) != EMBEDDING_DIMENSIONS
+        embedding_provider.dimensions != EMBEDDING_DIMENSIONS
+        or len(query_embedding) != EMBEDDING_DIMENSIONS
     ):
         raise RuntimeError("embedding provider returned an invalid query vector")
 
     vector_candidates = await _vector_candidates(
         session,
         knowledge_base_id,
-        embeddings[0],
+        query_embedding,
         embedding_provider,
         candidate_limit,
     )
@@ -156,9 +185,55 @@ async def hybrid_search(
         query,
         candidate_limit,
     )
-    return reciprocal_rank_fusion(
+    fused = reciprocal_rank_fusion(
         vector_candidates,
         keyword_candidates,
         rank_constant=rank_constant,
-        limit=top_k,
+        limit=candidate_limit,
+    )
+    try:
+        reranked = await rerank_provider.rerank(
+            query=query,
+            documents=[item.candidate.content for item in fused],
+            top_n=top_k,
+        )
+    except RerankProviderError as exception:
+        unavailable_codes = {
+            "rerank_authentication_failed",
+            "rerank_circuit_open",
+            "rerank_provider_unavailable",
+            "rerank_rate_limited",
+            "rerank_timeout",
+        }
+        raise AppError(
+            code=exception.code,
+            message=exception.message,
+            status_code=503 if exception.code in unavailable_codes else 502,
+        ) from exception
+
+    ordered = [
+        replace(
+            fused[item.index],
+            rerank_rank=rank,
+            rerank_score=item.relevance_score,
+        )
+        for rank, item in enumerate(reranked.items, start=1)
+    ]
+    top_score = ordered[0].rerank_score if ordered else None
+    evidence_sufficient = top_score is not None and top_score >= evidence_min_score
+    accepted = (
+        [
+            item
+            for item in ordered
+            if item.rerank_score is not None and item.rerank_score >= evidence_min_score
+        ]
+        if evidence_sufficient
+        else []
+    )
+    return RetrievalOutcome(
+        candidates=accepted,
+        rerank_model=reranked.model,
+        rerank_request_id=reranked.request_id,
+        top_rerank_score=top_score,
+        evidence_sufficient=evidence_sufficient,
     )

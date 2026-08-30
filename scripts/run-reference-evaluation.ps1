@@ -5,6 +5,12 @@ param(
     [ValidateSet("deterministic", "configured")]
     [string]$GenerationProvider = "deterministic",
 
+    [ValidateSet("deterministic", "configured")]
+    [string]$EmbeddingProvider = "deterministic",
+
+    [ValidateSet("deterministic", "configured")]
+    [string]$RerankProvider = "deterministic",
+
     [string]$Output,
 
     [switch]$AllowThresholdFailure
@@ -22,10 +28,15 @@ if (-not (Test-Path -LiteralPath $Python)) {
 if (-not $Output) {
     $Output = Join-Path $ProjectRoot "evaluation\reports\reference-$Mode-latest.json"
 }
+elseif (-not [System.IO.Path]::IsPathRooted($Output)) {
+    $Output = Join-Path $ProjectRoot $Output
+}
 
 $Arguments = @(
     "-m", "app.cli.run_reference_evaluation",
     "--mode", $Mode,
+    "--embedding-provider", $EmbeddingProvider,
+    "--rerank-provider", $RerankProvider,
     "--generation-provider", $GenerationProvider,
     "--output", $Output
 )

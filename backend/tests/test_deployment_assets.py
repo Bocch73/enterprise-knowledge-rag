@@ -93,3 +93,21 @@ def test_frontend_proxy_preserves_streaming_and_hides_metrics() -> None:
     assert "return 404;" in nginx
     assert "proxy_buffering off;" in nginx
     assert "client_max_body_size 20m;" in nginx
+
+
+def test_local_development_launcher_manages_three_independent_processes() -> None:
+    launcher = read_project_file("scripts/dev-services.ps1")
+    gitignore = read_project_file(".gitignore")
+
+    assert 'ValidateSet("Start", "Stop", "Status", "Restart")' in launcher
+    assert '"-m", "app.server"' in launcher
+    assert '"-m", "app.cli.run_ingestion_worker"' in launcher
+    assert '"node_modules\\vite\\bin\\vite.js"' in launcher
+    assert launcher.count("Start-Process") == 1
+    assert "RedirectStandardOutput" in launcher
+    assert "Get-DescendantProcessIds" in launcher
+    assert "api/v1/health/ready" in launcher
+    assert 'HealthUrl = "http://127.0.0.1:5173"' in launcher
+    assert ".dev-runtime/" in gitignore
+    assert "123456" not in launcher
+    assert "DEEPSEEK_API_KEY" not in launcher

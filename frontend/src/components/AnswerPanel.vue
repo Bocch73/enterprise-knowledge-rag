@@ -9,26 +9,49 @@ const props = defineProps<{ token: string; knowledgeBaseId: string; knowledgeBas
 const question = ref('')
 const answering = ref(false)
 const answer = ref('')
+const lastQuestion = ref('')
 const citations = ref<AnswerCitation[]>([])
 const model = ref('')
 const refused = ref(false)
 const errorMessage = ref('')
+const history = ref<
+  Array<{
+    question: string
+    answer: string
+    citations: AnswerCitation[]
+    model: string
+    refused: boolean
+  }>
+>([])
 
 watch(
   () => props.knowledgeBaseId,
   () => {
     question.value = ''
     answer.value = ''
+    lastQuestion.value = ''
     citations.value = []
     model.value = ''
     refused.value = false
     errorMessage.value = ''
+    history.value = []
   },
 )
 
 async function ask(): Promise<void> {
   const cleaned = question.value.trim()
   if (cleaned.length < 2 || answering.value) return
+  if (lastQuestion.value && answer.value) {
+    history.value.push({
+      question: lastQuestion.value,
+      answer: answer.value,
+      citations: [...citations.value],
+      model: model.value,
+      refused: refused.value,
+    })
+  }
+  lastQuestion.value = cleaned
+  question.value = ''
   answering.value = true
   answer.value = ''
   citations.value = []
@@ -52,21 +75,61 @@ async function ask(): Promise<void> {
 function useSuggestion(value: string): void {
   question.value = value
 }
+
+function newSession(): void {
+  question.value = ''
+  answer.value = ''
+  lastQuestion.value = ''
+  citations.value = []
+  model.value = ''
+  refused.value = false
+  errorMessage.value = ''
+  history.value = []
+}
 </script>
 
 <template>
-  <section class="panel answer-panel" aria-labelledby="answer-title">
+  <section class="panel answer-panel answer-panel--studio" aria-labelledby="answer-title">
     <div class="panel-heading">
       <div>
         <p class="eyebrow">GROUNDED ANSWER</p>
         <h2 id="answer-title">向知识库提问</h2>
       </div>
-      <span class="model-badge"><i aria-hidden="true"></i> DeepSeek</span>
+      <div class="panel-heading__meta">
+        <button
+          v-if="history.length || answer"
+          class="text-button"
+          type="button"
+          @click="newSession"
+        >
+          ＋ 新会话
+        </button>
+        <span class="model-badge"><i aria-hidden="true"></i> DeepSeek</span>
+      </div>
     </div>
 
     <div v-if="errorMessage" class="alert alert--error" role="alert">{{ errorMessage }}</div>
 
-    <div v-if="!answer && !answering" class="answer-welcome">
+    <div v-if="history.length" class="conversation-history">
+      <article v-for="(turn, index) in history" :key="`${turn.question}-${index}`">
+        <div class="question-bubble">
+          <span>你</span>
+          <p>{{ turn.question }}</p>
+        </div>
+        <div class="history-answer">
+          <span class="answer-avatar" aria-hidden="true">知</span>
+          <div>
+            <small>{{ turn.model }}</small>
+            <p>{{ turn.answer }}</p>
+            <span v-if="turn.citations.length" class="history-citation-count"
+              >{{ turn.citations.length }} 条来源依据</span
+            >
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <div v-if="!answer && !answering && history.length === 0" class="answer-welcome">
       <div class="answer-orb" aria-hidden="true"><span>知</span></div>
       <h3>我会依据“{{ knowledgeBaseName }}”中的内容回答</h3>
       <p>每个结论都应带有来源编号；资料不足时会明确拒答。</p>
@@ -81,7 +144,15 @@ function useSuggestion(value: string): void {
     </div>
 
     <div
-      v-else
+      v-if="lastQuestion && (answer || answering)"
+      class="question-bubble question-bubble--current"
+    >
+      <span>你</span>
+      <p>{{ lastQuestion }}</p>
+    </div>
+
+    <div
+      v-if="answer || answering"
       class="answer-result"
       :class="{ 'answer-result--refused': refused }"
       aria-live="polite"

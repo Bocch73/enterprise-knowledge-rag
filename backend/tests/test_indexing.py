@@ -1,4 +1,4 @@
-"""Boundary-aware chunking, deterministic embeddings, and pgvector persistence tests."""
+"""Boundary-aware chunking, test embeddings, and pgvector persistence tests."""
 
 import asyncio
 import math
@@ -15,7 +15,7 @@ from app.modules.indexing.chunking import split_text
 from app.modules.indexing.models import DocumentChunk
 from app.modules.indexing.providers import (
     EMBEDDING_DIMENSIONS,
-    DeterministicHashEmbeddingProvider,
+    DeterministicTestEmbeddingProvider,
 )
 from app.modules.ingestion.models import IngestionJob
 from app.modules.ingestion.worker import process_next_job
@@ -51,8 +51,8 @@ def test_chunker_preserves_offsets_size_and_overlap() -> None:
     assert all(current.start_offset < previous.end_offset for previous, current in pairwise(chunks))
 
 
-def test_deterministic_embedding_is_repeatable_normalized_and_fixed_size() -> None:
-    provider = DeterministicHashEmbeddingProvider()
+def test_deterministic_test_embedding_is_repeatable_normalized_and_fixed_size() -> None:
+    provider = DeterministicTestEmbeddingProvider()
 
     async def embed() -> tuple[list[float], list[float], list[float]]:
         first_batch = await provider.embed_documents(["员工年假 policy", "费用报销"])

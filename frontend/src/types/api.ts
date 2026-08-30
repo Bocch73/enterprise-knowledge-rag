@@ -1,5 +1,6 @@
 export type AccessLevel = 'owner' | 'editor' | 'viewer'
 export type JobStatus = 'queued' | 'running' | 'completed' | 'failed'
+export type WorkspaceSection = 'overview' | 'knowledge' | 'documents' | 'qa'
 export type JobStage =
   'queued' | 'parsing' | 'chunking' | 'embedding' | 'indexing' | 'completed' | 'failed'
 
@@ -10,6 +11,11 @@ export interface User {
   is_active: boolean
   roles: string[]
   created_at: string
+}
+
+export interface ReadinessStatus {
+  status: 'ready' | 'not_ready'
+  checks: Record<string, 'up' | 'down'>
 }
 
 export interface TokenResponse {

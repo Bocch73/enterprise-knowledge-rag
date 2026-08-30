@@ -1,12 +1,36 @@
 {
-  "name": "Company policy interview baseline",
-  "version": "1.0.0",
-  "description": "Small human-reviewed baseline for retrieval, citations, required facts, and refusal behavior.",
-  "top_k": 3,
+  "name": "Enterprise policy RAG baseline",
+  "version": "2.0.0",
+  "description": "A fixed synthetic enterprise-policy benchmark with paraphrases and unanswerable controls for retrieval, reranking, evidence gating, citations, required facts, and refusal behavior.",
+  "top_k": 5,
   "corpus": [
     {
+      "filename": "data-retention-policy.md",
+      "sha256": "47a3ca4bdbd0a13e07b244b3b98944ea9428dcae984446df9b67811302d9811f"
+    },
+    {
+      "filename": "employee-expense-policy.md",
+      "sha256": "5fdde5dcd9f771432c2c6a08e6a680c32a601b0ac5725ae9855b73e5a4922671"
+    },
+    {
+      "filename": "incident-response-policy.md",
+      "sha256": "2517b263d0fae194e78347d32604bb59888ccee9992df287c46cabfd5a5a792a"
+    },
+    {
       "filename": "leave-policy.md",
-      "sha256": "bd4f41917c95203df1911a92d325136ab7ff617e39f98365eed51345b75b2ae5"
+      "sha256": "756cae574c98a1bfe80a117a4639a67a1a1bee3f5f9e0a39a55f5c9a9e6f044e"
+    },
+    {
+      "filename": "onboarding-policy.md",
+      "sha256": "87018076066135a5118c3b295f1f62f181ddbf3d67bba1a93f1de6fe410d7504"
+    },
+    {
+      "filename": "procurement-policy.md",
+      "sha256": "487499177ffcb6ad13e88bdceba205d483dd7d416c66bb768d285ec3c18b8cca"
+    },
+    {
+      "filename": "remote-work-policy.md",
+      "sha256": "e6c5895733d2e42c7177f3dbbdbc47ab8a06efb8439a80cf3d30fca3401758eb"
     },
     {
       "filename": "security-policy.md",
@@ -14,57 +38,2733 @@
     },
     {
       "filename": "travel-policy.md",
-      "sha256": "6d0886baf1ceff3b367be4f82bc7c0b02c9e9aa8a76787ee31a7569f071bc213"
+      "sha256": "79fedb8b772a3aef6302e6e8034e21dfb81dfb9544d84fa9dbe7aba6edc17009"
     }
   ],
   "thresholds": {
-    "hit_rate_at_k": 0.8,
-    "mean_reciprocal_rank": 0.7,
-    "mean_ndcg_at_k": 0.7,
+    "hit_rate_at_k": 0.9,
+    "mean_reciprocal_rank": 0.8,
+    "mean_ndcg_at_k": 0.8,
     "citation_precision": 0.9,
-    "citation_recall": 0.8,
-    "answer_term_coverage": 0.75,
-    "refusal_accuracy": 0.9,
-    "grounded_answer_rate": 0.9
+    "citation_recall": 0.85,
+    "answer_term_coverage": 0.8,
+    "refusal_accuracy": 0.85,
+    "grounded_answer_rate": 0.9,
+    "evidence_sufficiency_accuracy": 0.85,
+    "unanswerable_rejection_rate": 0.75
   },
   "cases": [
     {
-      "id": "security-password-rotation",
-      "question": "SEC-104 对员工密码轮换有什么要求？",
-      "answerable": true,
-      "relevant_sources": ["security-policy.md"],
-      "required_answer_terms": [["SEC-104"], ["90", "九十"], ["密码"]],
-      "notes": "Verifies exact policy code and rotation interval."
-    },
-    {
-      "id": "security-remote-access",
-      "question": "员工远程访问公司系统需要满足什么认证要求？",
-      "answerable": true,
-      "relevant_sources": ["security-policy.md"],
-      "required_answer_terms": [["多因素", "multi-factor", "MFA"]],
-      "notes": "Verifies a semantic query without the source's exact English wording."
-    },
-    {
-      "id": "travel-expense-approval",
-      "question": "超过 200 元的差旅报销需要提供什么？",
-      "answerable": true,
-      "relevant_sources": ["travel-policy.md"],
-      "required_answer_terms": [["200", "二百"], ["收据", "receipt"], ["经理", "manager"]]
-    },
-    {
-      "id": "leave-entitlement",
+      "id": "annual-leave-1",
       "question": "全职员工每年有多少天带薪年假？",
       "answerable": true,
-      "relevant_sources": ["leave-policy.md"],
-      "required_answer_terms": [["15", "十五"], ["年假", "annual leave"]]
+      "relevant_sources": [
+        "leave-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "15",
+          "十五"
+        ],
+        [
+          "年假",
+          "annual leave"
+        ]
+      ],
+      "notes": "Paraphrase 1 for the annual-leave policy fact."
     },
     {
-      "id": "unanswerable-catering",
+      "id": "annual-leave-2",
+      "question": "年度带薪年假额度是多少？",
+      "answerable": true,
+      "relevant_sources": [
+        "leave-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "15",
+          "十五"
+        ],
+        [
+          "年假",
+          "annual leave"
+        ]
+      ],
+      "notes": "Paraphrase 2 for the annual-leave policy fact."
+    },
+    {
+      "id": "annual-leave-3",
+      "question": "How many paid annual leave days does a full-time employee receive?",
+      "answerable": true,
+      "relevant_sources": [
+        "leave-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "15",
+          "十五"
+        ],
+        [
+          "年假",
+          "annual leave"
+        ]
+      ],
+      "notes": "Paraphrase 3 for the annual-leave policy fact."
+    },
+    {
+      "id": "annual-leave-4",
+      "question": "请说明全职员工一个日历年的年假天数。",
+      "answerable": true,
+      "relevant_sources": [
+        "leave-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "15",
+          "十五"
+        ],
+        [
+          "年假",
+          "annual leave"
+        ]
+      ],
+      "notes": "Paraphrase 4 for the annual-leave policy fact."
+    },
+    {
+      "id": "long-leave-notice-1",
+      "question": "连续请假三天需要提前多久申请？",
+      "answerable": true,
+      "relevant_sources": [
+        "leave-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "3",
+          "三"
+        ],
+        [
+          "7",
+          "七"
+        ],
+        [
+          "提前",
+          "advance"
+        ]
+      ],
+      "notes": "Paraphrase 1 for the long-leave-notice policy fact."
+    },
+    {
+      "id": "long-leave-notice-2",
+      "question": "三天或更长的连续休假应何时提交？",
+      "answerable": true,
+      "relevant_sources": [
+        "leave-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "3",
+          "三"
+        ],
+        [
+          "7",
+          "七"
+        ],
+        [
+          "提前",
+          "advance"
+        ]
+      ],
+      "notes": "Paraphrase 2 for the long-leave-notice policy fact."
+    },
+    {
+      "id": "long-leave-notice-3",
+      "question": "What notice is required for three or more consecutive leave days?",
+      "answerable": true,
+      "relevant_sources": [
+        "leave-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "3",
+          "三"
+        ],
+        [
+          "7",
+          "七"
+        ],
+        [
+          "提前",
+          "advance"
+        ]
+      ],
+      "notes": "Paraphrase 3 for the long-leave-notice policy fact."
+    },
+    {
+      "id": "long-leave-notice-4",
+      "question": "员工计划连续休假四天，最迟要提前几天申请？",
+      "answerable": true,
+      "relevant_sources": [
+        "leave-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "3",
+          "三"
+        ],
+        [
+          "7",
+          "七"
+        ],
+        [
+          "提前",
+          "advance"
+        ]
+      ],
+      "notes": "Paraphrase 4 for the long-leave-notice policy fact."
+    },
+    {
+      "id": "leave-carryover-1",
+      "question": "未使用年假最多能结转多少天，何时前用完？",
+      "answerable": true,
+      "relevant_sources": [
+        "leave-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "5",
+          "五"
+        ],
+        [
+          "3 月 31",
+          "3月31",
+          "March 31"
+        ],
+        [
+          "结转",
+          "carry"
+        ]
+      ],
+      "notes": "Paraphrase 1 for the leave-carryover policy fact."
+    },
+    {
+      "id": "leave-carryover-2",
+      "question": "年假结转上限和使用截止日是什么？",
+      "answerable": true,
+      "relevant_sources": [
+        "leave-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "5",
+          "五"
+        ],
+        [
+          "3 月 31",
+          "3月31",
+          "March 31"
+        ],
+        [
+          "结转",
+          "carry"
+        ]
+      ],
+      "notes": "Paraphrase 2 for the leave-carryover policy fact."
+    },
+    {
+      "id": "leave-carryover-3",
+      "question": "What is the annual-leave carryover limit and deadline?",
+      "answerable": true,
+      "relevant_sources": [
+        "leave-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "5",
+          "五"
+        ],
+        [
+          "3 月 31",
+          "3月31",
+          "March 31"
+        ],
+        [
+          "结转",
+          "carry"
+        ]
+      ],
+      "notes": "Paraphrase 3 for the leave-carryover policy fact."
+    },
+    {
+      "id": "leave-carryover-4",
+      "question": "上一年度剩余年假可以留几天到哪一天？",
+      "answerable": true,
+      "relevant_sources": [
+        "leave-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "5",
+          "五"
+        ],
+        [
+          "3 月 31",
+          "3月31",
+          "March 31"
+        ],
+        [
+          "结转",
+          "carry"
+        ]
+      ],
+      "notes": "Paraphrase 4 for the leave-carryover policy fact."
+    },
+    {
+      "id": "password-rotation-1",
+      "question": "SEC-104 对密码轮换有什么要求？",
+      "answerable": true,
+      "relevant_sources": [
+        "security-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "SEC-104"
+        ],
+        [
+          "90",
+          "九十"
+        ],
+        [
+          "密码",
+          "password"
+        ]
+      ],
+      "notes": "Paraphrase 1 for the password-rotation policy fact."
+    },
+    {
+      "id": "password-rotation-2",
+      "question": "员工账户密码多久必须更换一次？",
+      "answerable": true,
+      "relevant_sources": [
+        "security-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "SEC-104"
+        ],
+        [
+          "90",
+          "九十"
+        ],
+        [
+          "密码",
+          "password"
+        ]
+      ],
+      "notes": "Paraphrase 2 for the password-rotation policy fact."
+    },
+    {
+      "id": "password-rotation-3",
+      "question": "What password rotation interval does SEC-104 require?",
+      "answerable": true,
+      "relevant_sources": [
+        "security-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "SEC-104"
+        ],
+        [
+          "90",
+          "九十"
+        ],
+        [
+          "密码",
+          "password"
+        ]
+      ],
+      "notes": "Paraphrase 3 for the password-rotation policy fact."
+    },
+    {
+      "id": "password-rotation-4",
+      "question": "请说明安全制度中的密码更新周期和制度编号。",
+      "answerable": true,
+      "relevant_sources": [
+        "security-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "SEC-104"
+        ],
+        [
+          "90",
+          "九十"
+        ],
+        [
+          "密码",
+          "password"
+        ]
+      ],
+      "notes": "Paraphrase 4 for the password-rotation policy fact."
+    },
+    {
+      "id": "remote-mfa-1",
+      "question": "员工远程访问公司系统需要什么认证？",
+      "answerable": true,
+      "relevant_sources": [
+        "security-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "多因素",
+          "multi-factor",
+          "MFA"
+        ]
+      ],
+      "notes": "Paraphrase 1 for the remote-mfa policy fact."
+    },
+    {
+      "id": "remote-mfa-2",
+      "question": "从公司外部登录必须启用哪种认证方式？",
+      "answerable": true,
+      "relevant_sources": [
+        "security-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "多因素",
+          "multi-factor",
+          "MFA"
+        ]
+      ],
+      "notes": "Paraphrase 2 for the remote-mfa policy fact."
+    },
+    {
+      "id": "remote-mfa-3",
+      "question": "What authentication is required for remote access?",
+      "answerable": true,
+      "relevant_sources": [
+        "security-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "多因素",
+          "multi-factor",
+          "MFA"
+        ]
+      ],
+      "notes": "Paraphrase 3 for the remote-mfa policy fact."
+    },
+    {
+      "id": "remote-mfa-4",
+      "question": "远程连接企业系统能否只使用密码？需要什么额外认证？",
+      "answerable": true,
+      "relevant_sources": [
+        "security-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "多因素",
+          "multi-factor",
+          "MFA"
+        ]
+      ],
+      "notes": "Paraphrase 4 for the remote-mfa policy fact."
+    },
+    {
+      "id": "credential-exposure-1",
+      "question": "发现凭证可能泄露后多久内向谁报告？",
+      "answerable": true,
+      "relevant_sources": [
+        "security-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "1 小时",
+          "一小时",
+          "one hour",
+          "1 hour"
+        ],
+        [
+          "安全团队",
+          "security team"
+        ],
+        [
+          "泄露",
+          "exposure"
+        ]
+      ],
+      "notes": "Paraphrase 1 for the credential-exposure policy fact."
+    },
+    {
+      "id": "credential-exposure-2",
+      "question": "账号凭证疑似暴露的报告时限和接收部门是什么？",
+      "answerable": true,
+      "relevant_sources": [
+        "security-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "1 小时",
+          "一小时",
+          "one hour",
+          "1 hour"
+        ],
+        [
+          "安全团队",
+          "security team"
+        ],
+        [
+          "泄露",
+          "exposure"
+        ]
+      ],
+      "notes": "Paraphrase 2 for the credential-exposure policy fact."
+    },
+    {
+      "id": "credential-exposure-3",
+      "question": "When and to whom must suspected credential exposure be reported?",
+      "answerable": true,
+      "relevant_sources": [
+        "security-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "1 小时",
+          "一小时",
+          "one hour",
+          "1 hour"
+        ],
+        [
+          "安全团队",
+          "security team"
+        ],
+        [
+          "泄露",
+          "exposure"
+        ]
+      ],
+      "notes": "Paraphrase 3 for the credential-exposure policy fact."
+    },
+    {
+      "id": "credential-exposure-4",
+      "question": "员工怀疑密码被窃取，应在多长时间内通知哪个团队？",
+      "answerable": true,
+      "relevant_sources": [
+        "security-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "1 小时",
+          "一小时",
+          "one hour",
+          "1 hour"
+        ],
+        [
+          "安全团队",
+          "security team"
+        ],
+        [
+          "泄露",
+          "exposure"
+        ]
+      ],
+      "notes": "Paraphrase 4 for the credential-exposure policy fact."
+    },
+    {
+      "id": "travel-receipt-1",
+      "question": "超过 200 元的差旅报销需要提供什么？",
+      "answerable": true,
+      "relevant_sources": [
+        "travel-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "200",
+          "二百"
+        ],
+        [
+          "收据",
+          "receipt"
+        ],
+        [
+          "经理",
+          "manager"
+        ]
+      ],
+      "notes": "Paraphrase 1 for the travel-receipt policy fact."
+    },
+    {
+      "id": "travel-receipt-2",
+      "question": "高于二百元的出差费用报销有哪些凭证和审批要求？",
+      "answerable": true,
+      "relevant_sources": [
+        "travel-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "200",
+          "二百"
+        ],
+        [
+          "收据",
+          "receipt"
+        ],
+        [
+          "经理",
+          "manager"
+        ]
+      ],
+      "notes": "Paraphrase 2 for the travel-receipt policy fact."
+    },
+    {
+      "id": "travel-receipt-3",
+      "question": "What is required for a travel claim above 200 yuan?",
+      "answerable": true,
+      "relevant_sources": [
+        "travel-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "200",
+          "二百"
+        ],
+        [
+          "收据",
+          "receipt"
+        ],
+        [
+          "经理",
+          "manager"
+        ]
+      ],
+      "notes": "Paraphrase 3 for the travel-receipt policy fact."
+    },
+    {
+      "id": "travel-receipt-4",
+      "question": "差旅费用为 350 元时，需要收据和谁的批准？",
+      "answerable": true,
+      "relevant_sources": [
+        "travel-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "200",
+          "二百"
+        ],
+        [
+          "收据",
+          "receipt"
+        ],
+        [
+          "经理",
+          "manager"
+        ]
+      ],
+      "notes": "Paraphrase 4 for the travel-receipt policy fact."
+    },
+    {
+      "id": "travel-deadline-1",
+      "question": "出差回来后多少天内提交差旅费用？",
+      "answerable": true,
+      "relevant_sources": [
+        "travel-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "10",
+          "十"
+        ],
+        [
+          "日历日",
+          "calendar days"
+        ],
+        [
+          "提交",
+          "submit"
+        ]
+      ],
+      "notes": "Paraphrase 1 for the travel-deadline policy fact."
+    },
+    {
+      "id": "travel-deadline-2",
+      "question": "差旅报销的提交截止时间如何计算？",
+      "answerable": true,
+      "relevant_sources": [
+        "travel-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "10",
+          "十"
+        ],
+        [
+          "日历日",
+          "calendar days"
+        ],
+        [
+          "提交",
+          "submit"
+        ]
+      ],
+      "notes": "Paraphrase 2 for the travel-deadline policy fact."
+    },
+    {
+      "id": "travel-deadline-3",
+      "question": "When must travel expenses be submitted after returning?",
+      "answerable": true,
+      "relevant_sources": [
+        "travel-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "10",
+          "十"
+        ],
+        [
+          "日历日",
+          "calendar days"
+        ],
+        [
+          "提交",
+          "submit"
+        ]
+      ],
+      "notes": "Paraphrase 3 for the travel-deadline policy fact."
+    },
+    {
+      "id": "travel-deadline-4",
+      "question": "员工返程后最晚几个日历日内报销？",
+      "answerable": true,
+      "relevant_sources": [
+        "travel-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "10",
+          "十"
+        ],
+        [
+          "日历日",
+          "calendar days"
+        ],
+        [
+          "提交",
+          "submit"
+        ]
+      ],
+      "notes": "Paraphrase 4 for the travel-deadline policy fact."
+    },
+    {
+      "id": "hotel-cap-1",
+      "question": "国内出差住宿每晚上限是多少，超标怎么办？",
+      "answerable": true,
+      "relevant_sources": [
+        "travel-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "600",
+          "六百"
+        ],
+        [
+          "总监",
+          "director"
+        ],
+        [
+          "书面",
+          "written"
+        ]
+      ],
+      "notes": "Paraphrase 1 for the hotel-cap policy fact."
+    },
+    {
+      "id": "hotel-cap-2",
+      "question": "酒店费用超过标准时需要哪一级书面批准？",
+      "answerable": true,
+      "relevant_sources": [
+        "travel-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "600",
+          "六百"
+        ],
+        [
+          "总监",
+          "director"
+        ],
+        [
+          "书面",
+          "written"
+        ]
+      ],
+      "notes": "Paraphrase 2 for the hotel-cap policy fact."
+    },
+    {
+      "id": "hotel-cap-3",
+      "question": "What is the domestic hotel cap and approval for an exception?",
+      "answerable": true,
+      "relevant_sources": [
+        "travel-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "600",
+          "六百"
+        ],
+        [
+          "总监",
+          "director"
+        ],
+        [
+          "书面",
+          "written"
+        ]
+      ],
+      "notes": "Paraphrase 3 for the hotel-cap policy fact."
+    },
+    {
+      "id": "hotel-cap-4",
+      "question": "国内差旅住店每晚 700 元是否需要额外审批？",
+      "answerable": true,
+      "relevant_sources": [
+        "travel-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "600",
+          "六百"
+        ],
+        [
+          "总监",
+          "director"
+        ],
+        [
+          "书面",
+          "written"
+        ]
+      ],
+      "notes": "Paraphrase 4 for the hotel-cap policy fact."
+    },
+    {
+      "id": "remote-days-1",
+      "question": "员工每周最多可以远程办公几天，需要谁批准？",
+      "answerable": true,
+      "relevant_sources": [
+        "remote-work-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "3",
+          "三"
+        ],
+        [
+          "经理",
+          "manager"
+        ],
+        [
+          "远程",
+          "remote"
+        ]
+      ],
+      "notes": "Paraphrase 1 for the remote-days policy fact."
+    },
+    {
+      "id": "remote-days-2",
+      "question": "远程办公的每周天数上限和审批人是什么？",
+      "answerable": true,
+      "relevant_sources": [
+        "remote-work-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "3",
+          "三"
+        ],
+        [
+          "经理",
+          "manager"
+        ],
+        [
+          "远程",
+          "remote"
+        ]
+      ],
+      "notes": "Paraphrase 2 for the remote-days policy fact."
+    },
+    {
+      "id": "remote-days-3",
+      "question": "How many remote-work days per week are allowed and who approves them?",
+      "answerable": true,
+      "relevant_sources": [
+        "remote-work-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "3",
+          "三"
+        ],
+        [
+          "经理",
+          "manager"
+        ],
+        [
+          "远程",
+          "remote"
+        ]
+      ],
+      "notes": "Paraphrase 3 for the remote-days policy fact."
+    },
+    {
+      "id": "remote-days-4",
+      "question": "每周在家办公四天是否符合规定？正常上限是多少？",
+      "answerable": true,
+      "relevant_sources": [
+        "remote-work-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "3",
+          "三"
+        ],
+        [
+          "经理",
+          "manager"
+        ],
+        [
+          "远程",
+          "remote"
+        ]
+      ],
+      "notes": "Paraphrase 4 for the remote-days policy fact."
+    },
+    {
+      "id": "core-hours-1",
+      "question": "远程办公的核心协作时间是什么？",
+      "answerable": true,
+      "relevant_sources": [
+        "remote-work-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "10:00",
+          "10 点",
+          "十点"
+        ],
+        [
+          "16:00",
+          "16 点",
+          "十六点"
+        ],
+        [
+          "核心",
+          "core"
+        ]
+      ],
+      "notes": "Paraphrase 1 for the core-hours policy fact."
+    },
+    {
+      "id": "core-hours-2",
+      "question": "员工每天必须在线协作的时间段是几点到几点？",
+      "answerable": true,
+      "relevant_sources": [
+        "remote-work-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "10:00",
+          "10 点",
+          "十点"
+        ],
+        [
+          "16:00",
+          "16 点",
+          "十六点"
+        ],
+        [
+          "核心",
+          "core"
+        ]
+      ],
+      "notes": "Paraphrase 2 for the core-hours policy fact."
+    },
+    {
+      "id": "core-hours-3",
+      "question": "What are the core collaboration hours for remote workers?",
+      "answerable": true,
+      "relevant_sources": [
+        "remote-work-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "10:00",
+          "10 点",
+          "十点"
+        ],
+        [
+          "16:00",
+          "16 点",
+          "十六点"
+        ],
+        [
+          "核心",
+          "core"
+        ]
+      ],
+      "notes": "Paraphrase 3 for the core-hours policy fact."
+    },
+    {
+      "id": "core-hours-4",
+      "question": "请给出远程工作制度规定的核心工作起止时间。",
+      "answerable": true,
+      "relevant_sources": [
+        "remote-work-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "10:00",
+          "10 点",
+          "十点"
+        ],
+        [
+          "16:00",
+          "16 点",
+          "十六点"
+        ],
+        [
+          "核心",
+          "core"
+        ]
+      ],
+      "notes": "Paraphrase 4 for the core-hours policy fact."
+    },
+    {
+      "id": "equipment-loss-1",
+      "question": "公司设备遗失后多久内向哪个部门报告？",
+      "answerable": true,
+      "relevant_sources": [
+        "remote-work-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "24",
+          "二十四"
+        ],
+        [
+          "信息技术",
+          "Information Technology",
+          "IT"
+        ],
+        [
+          "设备",
+          "equipment"
+        ]
+      ],
+      "notes": "Paraphrase 1 for the equipment-loss policy fact."
+    },
+    {
+      "id": "equipment-loss-2",
+      "question": "笔记本损坏的报告时限和负责部门是什么？",
+      "answerable": true,
+      "relevant_sources": [
+        "remote-work-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "24",
+          "二十四"
+        ],
+        [
+          "信息技术",
+          "Information Technology",
+          "IT"
+        ],
+        [
+          "设备",
+          "equipment"
+        ]
+      ],
+      "notes": "Paraphrase 2 for the equipment-loss policy fact."
+    },
+    {
+      "id": "equipment-loss-3",
+      "question": "When must lost company equipment be reported and to whom?",
+      "answerable": true,
+      "relevant_sources": [
+        "remote-work-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "24",
+          "二十四"
+        ],
+        [
+          "信息技术",
+          "Information Technology",
+          "IT"
+        ],
+        [
+          "设备",
+          "equipment"
+        ]
+      ],
+      "notes": "Paraphrase 3 for the equipment-loss policy fact."
+    },
+    {
+      "id": "equipment-loss-4",
+      "question": "远程办公设备发生损坏，应在几小时内通知哪个团队？",
+      "answerable": true,
+      "relevant_sources": [
+        "remote-work-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "24",
+          "二十四"
+        ],
+        [
+          "信息技术",
+          "Information Technology",
+          "IT"
+        ],
+        [
+          "设备",
+          "equipment"
+        ]
+      ],
+      "notes": "Paraphrase 4 for the equipment-loss policy fact."
+    },
+    {
+      "id": "purchase-small-1",
+      "question": "不超过 5000 元的采购由谁批准？",
+      "answerable": true,
+      "relevant_sources": [
+        "procurement-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "5,000",
+          "5000",
+          "五千"
+        ],
+        [
+          "团队负责人",
+          "team lead"
+        ],
+        [
+          "批准",
+          "approval"
+        ]
+      ],
+      "notes": "Paraphrase 1 for the purchase-small policy fact."
+    },
+    {
+      "id": "purchase-small-2",
+      "question": "小额采购的金额上限和审批人是什么？",
+      "answerable": true,
+      "relevant_sources": [
+        "procurement-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "5,000",
+          "5000",
+          "五千"
+        ],
+        [
+          "团队负责人",
+          "team lead"
+        ],
+        [
+          "批准",
+          "approval"
+        ]
+      ],
+      "notes": "Paraphrase 2 for the purchase-small policy fact."
+    },
+    {
+      "id": "purchase-small-3",
+      "question": "Who approves a purchase up to 5,000 yuan?",
+      "answerable": true,
+      "relevant_sources": [
+        "procurement-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "5,000",
+          "5000",
+          "五千"
+        ],
+        [
+          "团队负责人",
+          "team lead"
+        ],
+        [
+          "批准",
+          "approval"
+        ]
+      ],
+      "notes": "Paraphrase 3 for the purchase-small policy fact."
+    },
+    {
+      "id": "purchase-small-4",
+      "question": "采购金额为 4800 元时需要哪一级批准？",
+      "answerable": true,
+      "relevant_sources": [
+        "procurement-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "5,000",
+          "5000",
+          "五千"
+        ],
+        [
+          "团队负责人",
+          "team lead"
+        ],
+        [
+          "批准",
+          "approval"
+        ]
+      ],
+      "notes": "Paraphrase 4 for the purchase-small policy fact."
+    },
+    {
+      "id": "purchase-medium-1",
+      "question": "两万元采购需要什么审批和报价材料？",
+      "answerable": true,
+      "relevant_sources": [
+        "procurement-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "50,000",
+          "50000",
+          "五万"
+        ],
+        [
+          "总监",
+          "director"
+        ],
+        [
+          "三",
+          "3",
+          "three"
+        ],
+        [
+          "报价",
+          "quotation"
+        ]
+      ],
+      "notes": "Paraphrase 1 for the purchase-medium policy fact."
+    },
+    {
+      "id": "purchase-medium-2",
+      "question": "超过 5000 元但不超过 50000 元的采购要求是什么？",
+      "answerable": true,
+      "relevant_sources": [
+        "procurement-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "50,000",
+          "50000",
+          "五万"
+        ],
+        [
+          "总监",
+          "director"
+        ],
+        [
+          "三",
+          "3",
+          "three"
+        ],
+        [
+          "报价",
+          "quotation"
+        ]
+      ],
+      "notes": "Paraphrase 2 for the purchase-medium policy fact."
+    },
+    {
+      "id": "purchase-medium-3",
+      "question": "What is required for a purchase between 5,000 and 50,000 yuan?",
+      "answerable": true,
+      "relevant_sources": [
+        "procurement-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "50,000",
+          "50000",
+          "五万"
+        ],
+        [
+          "总监",
+          "director"
+        ],
+        [
+          "三",
+          "3",
+          "three"
+        ],
+        [
+          "报价",
+          "quotation"
+        ]
+      ],
+      "notes": "Paraphrase 3 for the purchase-medium policy fact."
+    },
+    {
+      "id": "purchase-medium-4",
+      "question": "采购 30000 元设备，需要谁批准并收集几份报价？",
+      "answerable": true,
+      "relevant_sources": [
+        "procurement-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "50,000",
+          "50000",
+          "五万"
+        ],
+        [
+          "总监",
+          "director"
+        ],
+        [
+          "三",
+          "3",
+          "three"
+        ],
+        [
+          "报价",
+          "quotation"
+        ]
+      ],
+      "notes": "Paraphrase 4 for the purchase-medium policy fact."
+    },
+    {
+      "id": "purchase-large-1",
+      "question": "超过 50000 元的采购由谁审核？",
+      "answerable": true,
+      "relevant_sources": [
+        "procurement-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "50,000",
+          "50000",
+          "五万"
+        ],
+        [
+          "采购委员会",
+          "procurement committee"
+        ],
+        [
+          "审核",
+          "review"
+        ]
+      ],
+      "notes": "Paraphrase 1 for the purchase-large policy fact."
+    },
+    {
+      "id": "purchase-large-2",
+      "question": "大额采购触发采购委员会审核的金额条件是什么？",
+      "answerable": true,
+      "relevant_sources": [
+        "procurement-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "50,000",
+          "50000",
+          "五万"
+        ],
+        [
+          "采购委员会",
+          "procurement committee"
+        ],
+        [
+          "审核",
+          "review"
+        ]
+      ],
+      "notes": "Paraphrase 2 for the purchase-large policy fact."
+    },
+    {
+      "id": "purchase-large-3",
+      "question": "Who reviews purchases above 50,000 yuan?",
+      "answerable": true,
+      "relevant_sources": [
+        "procurement-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "50,000",
+          "50000",
+          "五万"
+        ],
+        [
+          "采购委员会",
+          "procurement committee"
+        ],
+        [
+          "审核",
+          "review"
+        ]
+      ],
+      "notes": "Paraphrase 3 for the purchase-large policy fact."
+    },
+    {
+      "id": "purchase-large-4",
+      "question": "六万元采购是否需要委员会审核？",
+      "answerable": true,
+      "relevant_sources": [
+        "procurement-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "50,000",
+          "50000",
+          "五万"
+        ],
+        [
+          "采购委员会",
+          "procurement committee"
+        ],
+        [
+          "审核",
+          "review"
+        ]
+      ],
+      "notes": "Paraphrase 4 for the purchase-large policy fact."
+    },
+    {
+      "id": "contract-retention-1",
+      "question": "已签署客户合同需要保存多少年？",
+      "answerable": true,
+      "relevant_sources": [
+        "data-retention-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "7",
+          "七"
+        ],
+        [
+          "年",
+          "years"
+        ],
+        [
+          "合同",
+          "contract"
+        ]
+      ],
+      "notes": "Paraphrase 1 for the contract-retention policy fact."
+    },
+    {
+      "id": "contract-retention-2",
+      "question": "客户合同的规定保留期限是多久？",
+      "answerable": true,
+      "relevant_sources": [
+        "data-retention-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "7",
+          "七"
+        ],
+        [
+          "年",
+          "years"
+        ],
+        [
+          "合同",
+          "contract"
+        ]
+      ],
+      "notes": "Paraphrase 2 for the contract-retention policy fact."
+    },
+    {
+      "id": "contract-retention-3",
+      "question": "How long must signed customer contracts be retained?",
+      "answerable": true,
+      "relevant_sources": [
+        "data-retention-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "7",
+          "七"
+        ],
+        [
+          "年",
+          "years"
+        ],
+        [
+          "合同",
+          "contract"
+        ]
+      ],
+      "notes": "Paraphrase 3 for the contract-retention policy fact."
+    },
+    {
+      "id": "contract-retention-4",
+      "question": "签约文件归档后至少保留几年？",
+      "answerable": true,
+      "relevant_sources": [
+        "data-retention-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "7",
+          "七"
+        ],
+        [
+          "年",
+          "years"
+        ],
+        [
+          "合同",
+          "contract"
+        ]
+      ],
+      "notes": "Paraphrase 4 for the contract-retention policy fact."
+    },
+    {
+      "id": "audit-log-retention-1",
+      "question": "安全审计日志必须保留多久？",
+      "answerable": true,
+      "relevant_sources": [
+        "data-retention-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "2",
+          "二"
+        ],
+        [
+          "年",
+          "years"
+        ],
+        [
+          "审计日志",
+          "audit logs"
+        ]
+      ],
+      "notes": "Paraphrase 1 for the audit-log-retention policy fact."
+    },
+    {
+      "id": "audit-log-retention-2",
+      "question": "日志保留政策对安全审计记录规定了几年？",
+      "answerable": true,
+      "relevant_sources": [
+        "data-retention-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "2",
+          "二"
+        ],
+        [
+          "年",
+          "years"
+        ],
+        [
+          "审计日志",
+          "audit logs"
+        ]
+      ],
+      "notes": "Paraphrase 2 for the audit-log-retention policy fact."
+    },
+    {
+      "id": "audit-log-retention-3",
+      "question": "How long are security audit logs retained?",
+      "answerable": true,
+      "relevant_sources": [
+        "data-retention-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "2",
+          "二"
+        ],
+        [
+          "年",
+          "years"
+        ],
+        [
+          "审计日志",
+          "audit logs"
+        ]
+      ],
+      "notes": "Paraphrase 3 for the audit-log-retention policy fact."
+    },
+    {
+      "id": "audit-log-retention-4",
+      "question": "安全日志能否一年后删除？规定期限是多少？",
+      "answerable": true,
+      "relevant_sources": [
+        "data-retention-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "2",
+          "二"
+        ],
+        [
+          "年",
+          "years"
+        ],
+        [
+          "审计日志",
+          "audit logs"
+        ]
+      ],
+      "notes": "Paraphrase 4 for the audit-log-retention policy fact."
+    },
+    {
+      "id": "deletion-deadline-1",
+      "question": "获批的数据删除请求应在多久内完成？",
+      "answerable": true,
+      "relevant_sources": [
+        "data-retention-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "30",
+          "三十"
+        ],
+        [
+          "日历日",
+          "calendar days"
+        ],
+        [
+          "删除",
+          "deletion"
+        ]
+      ],
+      "notes": "Paraphrase 1 for the deletion-deadline policy fact."
+    },
+    {
+      "id": "deletion-deadline-2",
+      "question": "数据删除申请批准后的处理时限是多少？",
+      "answerable": true,
+      "relevant_sources": [
+        "data-retention-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "30",
+          "三十"
+        ],
+        [
+          "日历日",
+          "calendar days"
+        ],
+        [
+          "删除",
+          "deletion"
+        ]
+      ],
+      "notes": "Paraphrase 2 for the deletion-deadline policy fact."
+    },
+    {
+      "id": "deletion-deadline-3",
+      "question": "When must an approved deletion request be completed?",
+      "answerable": true,
+      "relevant_sources": [
+        "data-retention-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "30",
+          "三十"
+        ],
+        [
+          "日历日",
+          "calendar days"
+        ],
+        [
+          "删除",
+          "deletion"
+        ]
+      ],
+      "notes": "Paraphrase 3 for the deletion-deadline policy fact."
+    },
+    {
+      "id": "deletion-deadline-4",
+      "question": "批准删除数据后，最多可以等待几个日历日？",
+      "answerable": true,
+      "relevant_sources": [
+        "data-retention-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "30",
+          "三十"
+        ],
+        [
+          "日历日",
+          "calendar days"
+        ],
+        [
+          "删除",
+          "deletion"
+        ]
+      ],
+      "notes": "Paraphrase 4 for the deletion-deadline policy fact."
+    },
+    {
+      "id": "meal-cap-1",
+      "question": "每日餐费补贴上限是多少？",
+      "answerable": true,
+      "relevant_sources": [
+        "employee-expense-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "120",
+          "一百二十"
+        ],
+        [
+          "餐费",
+          "meal"
+        ],
+        [
+          "上限",
+          "cap"
+        ]
+      ],
+      "notes": "Paraphrase 1 for the meal-cap policy fact."
+    },
+    {
+      "id": "meal-cap-2",
+      "question": "员工一天最多能报销多少餐费？",
+      "answerable": true,
+      "relevant_sources": [
+        "employee-expense-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "120",
+          "一百二十"
+        ],
+        [
+          "餐费",
+          "meal"
+        ],
+        [
+          "上限",
+          "cap"
+        ]
+      ],
+      "notes": "Paraphrase 2 for the meal-cap policy fact."
+    },
+    {
+      "id": "meal-cap-3",
+      "question": "What is the daily meal allowance cap?",
+      "answerable": true,
+      "relevant_sources": [
+        "employee-expense-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "120",
+          "一百二十"
+        ],
+        [
+          "餐费",
+          "meal"
+        ],
+        [
+          "上限",
+          "cap"
+        ]
+      ],
+      "notes": "Paraphrase 3 for the meal-cap policy fact."
+    },
+    {
+      "id": "meal-cap-4",
+      "question": "出差当天餐费 150 元是否全部在补贴上限内？",
+      "answerable": true,
+      "relevant_sources": [
+        "employee-expense-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "120",
+          "一百二十"
+        ],
+        [
+          "餐费",
+          "meal"
+        ],
+        [
+          "上限",
+          "cap"
+        ]
+      ],
+      "notes": "Paraphrase 4 for the meal-cap policy fact."
+    },
+    {
+      "id": "late-taxi-1",
+      "question": "晚上几点后的出租车费可以凭业务原因报销？",
+      "answerable": true,
+      "relevant_sources": [
+        "employee-expense-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "22:00",
+          "22 点",
+          "二十二点"
+        ],
+        [
+          "业务原因",
+          "business reason"
+        ],
+        [
+          "出租车",
+          "taxi"
+        ]
+      ],
+      "notes": "Paraphrase 1 for the late-taxi policy fact."
+    },
+    {
+      "id": "late-taxi-2",
+      "question": "深夜打车报销需要满足什么时间和说明条件？",
+      "answerable": true,
+      "relevant_sources": [
+        "employee-expense-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "22:00",
+          "22 点",
+          "二十二点"
+        ],
+        [
+          "业务原因",
+          "business reason"
+        ],
+        [
+          "出租车",
+          "taxi"
+        ]
+      ],
+      "notes": "Paraphrase 2 for the late-taxi policy fact."
+    },
+    {
+      "id": "late-taxi-3",
+      "question": "When may a late-night taxi fare be reimbursed?",
+      "answerable": true,
+      "relevant_sources": [
+        "employee-expense-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "22:00",
+          "22 点",
+          "二十二点"
+        ],
+        [
+          "业务原因",
+          "business reason"
+        ],
+        [
+          "出租车",
+          "taxi"
+        ]
+      ],
+      "notes": "Paraphrase 3 for the late-taxi policy fact."
+    },
+    {
+      "id": "late-taxi-4",
+      "question": "员工 23 点打车回家，报销时必须记录什么？",
+      "answerable": true,
+      "relevant_sources": [
+        "employee-expense-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "22:00",
+          "22 点",
+          "二十二点"
+        ],
+        [
+          "业务原因",
+          "business reason"
+        ],
+        [
+          "出租车",
+          "taxi"
+        ]
+      ],
+      "notes": "Paraphrase 4 for the late-taxi policy fact."
+    },
+    {
+      "id": "entertainment-approval-1",
+      "question": "客户招待费用需要何时取得什么批准？",
+      "answerable": true,
+      "relevant_sources": [
+        "employee-expense-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "活动前",
+          "before the event"
+        ],
+        [
+          "书面",
+          "written"
+        ],
+        [
+          "批准",
+          "approval"
+        ]
+      ],
+      "notes": "Paraphrase 1 for the entertainment-approval policy fact."
+    },
+    {
+      "id": "entertainment-approval-2",
+      "question": "招待客户前必须完成哪种审批？",
+      "answerable": true,
+      "relevant_sources": [
+        "employee-expense-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "活动前",
+          "before the event"
+        ],
+        [
+          "书面",
+          "written"
+        ],
+        [
+          "批准",
+          "approval"
+        ]
+      ],
+      "notes": "Paraphrase 2 for the entertainment-approval policy fact."
+    },
+    {
+      "id": "entertainment-approval-3",
+      "question": "What approval is required for client entertainment expenses?",
+      "answerable": true,
+      "relevant_sources": [
+        "employee-expense-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "活动前",
+          "before the event"
+        ],
+        [
+          "书面",
+          "written"
+        ],
+        [
+          "批准",
+          "approval"
+        ]
+      ],
+      "notes": "Paraphrase 3 for the entertainment-approval policy fact."
+    },
+    {
+      "id": "entertainment-approval-4",
+      "question": "客户活动结束后再补口头批准是否符合制度？",
+      "answerable": true,
+      "relevant_sources": [
+        "employee-expense-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "活动前",
+          "before the event"
+        ],
+        [
+          "书面",
+          "written"
+        ],
+        [
+          "批准",
+          "approval"
+        ]
+      ],
+      "notes": "Paraphrase 4 for the entertainment-approval policy fact."
+    },
+    {
+      "id": "training-deadline-1",
+      "question": "新员工应在几个工作日内完成必修培训？",
+      "answerable": true,
+      "relevant_sources": [
+        "onboarding-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "5",
+          "五"
+        ],
+        [
+          "工作日",
+          "working days"
+        ],
+        [
+          "培训",
+          "training"
+        ]
+      ],
+      "notes": "Paraphrase 1 for the training-deadline policy fact."
+    },
+    {
+      "id": "training-deadline-2",
+      "question": "入职培训的完成期限是什么？",
+      "answerable": true,
+      "relevant_sources": [
+        "onboarding-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "5",
+          "五"
+        ],
+        [
+          "工作日",
+          "working days"
+        ],
+        [
+          "培训",
+          "training"
+        ]
+      ],
+      "notes": "Paraphrase 2 for the training-deadline policy fact."
+    },
+    {
+      "id": "training-deadline-3",
+      "question": "When must mandatory onboarding training be completed?",
+      "answerable": true,
+      "relevant_sources": [
+        "onboarding-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "5",
+          "五"
+        ],
+        [
+          "工作日",
+          "working days"
+        ],
+        [
+          "培训",
+          "training"
+        ]
+      ],
+      "notes": "Paraphrase 3 for the training-deadline policy fact."
+    },
+    {
+      "id": "training-deadline-4",
+      "question": "新人入职第几工作日前要完成规定课程？",
+      "answerable": true,
+      "relevant_sources": [
+        "onboarding-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "5",
+          "五"
+        ],
+        [
+          "工作日",
+          "working days"
+        ],
+        [
+          "培训",
+          "training"
+        ]
+      ],
+      "notes": "Paraphrase 4 for the training-deadline policy fact."
+    },
+    {
+      "id": "probation-period-1",
+      "question": "标准试用期是多长？",
+      "answerable": true,
+      "relevant_sources": [
+        "onboarding-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "3",
+          "三"
+        ],
+        [
+          "个月",
+          "months"
+        ],
+        [
+          "试用期",
+          "probation"
+        ]
+      ],
+      "notes": "Paraphrase 1 for the probation-period policy fact."
+    },
+    {
+      "id": "probation-period-2",
+      "question": "新员工通常需要经过几个月试用？",
+      "answerable": true,
+      "relevant_sources": [
+        "onboarding-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "3",
+          "三"
+        ],
+        [
+          "个月",
+          "months"
+        ],
+        [
+          "试用期",
+          "probation"
+        ]
+      ],
+      "notes": "Paraphrase 2 for the probation-period policy fact."
+    },
+    {
+      "id": "probation-period-3",
+      "question": "What is the standard probation period?",
+      "answerable": true,
+      "relevant_sources": [
+        "onboarding-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "3",
+          "三"
+        ],
+        [
+          "个月",
+          "months"
+        ],
+        [
+          "试用期",
+          "probation"
+        ]
+      ],
+      "notes": "Paraphrase 3 for the probation-period policy fact."
+    },
+    {
+      "id": "probation-period-4",
+      "question": "公司规定的正常试用期是多少个月？",
+      "answerable": true,
+      "relevant_sources": [
+        "onboarding-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "3",
+          "三"
+        ],
+        [
+          "个月",
+          "months"
+        ],
+        [
+          "试用期",
+          "probation"
+        ]
+      ],
+      "notes": "Paraphrase 4 for the probation-period policy fact."
+    },
+    {
+      "id": "laptop-return-1",
+      "question": "离职员工最迟何时归还公司笔记本？",
+      "answerable": true,
+      "relevant_sources": [
+        "onboarding-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "最后一个工作日",
+          "final working day"
+        ],
+        [
+          "笔记本",
+          "laptop"
+        ],
+        [
+          "归还",
+          "return"
+        ]
+      ],
+      "notes": "Paraphrase 1 for the laptop-return policy fact."
+    },
+    {
+      "id": "laptop-return-2",
+      "question": "公司电脑的离职归还截止点是什么？",
+      "answerable": true,
+      "relevant_sources": [
+        "onboarding-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "最后一个工作日",
+          "final working day"
+        ],
+        [
+          "笔记本",
+          "laptop"
+        ],
+        [
+          "归还",
+          "return"
+        ]
+      ],
+      "notes": "Paraphrase 2 for the laptop-return policy fact."
+    },
+    {
+      "id": "laptop-return-3",
+      "question": "When must a departing employee return the company laptop?",
+      "answerable": true,
+      "relevant_sources": [
+        "onboarding-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "最后一个工作日",
+          "final working day"
+        ],
+        [
+          "笔记本",
+          "laptop"
+        ],
+        [
+          "归还",
+          "return"
+        ]
+      ],
+      "notes": "Paraphrase 3 for the laptop-return policy fact."
+    },
+    {
+      "id": "laptop-return-4",
+      "question": "员工离职后一周再还电脑是否符合制度？正确时间是什么？",
+      "answerable": true,
+      "relevant_sources": [
+        "onboarding-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "最后一个工作日",
+          "final working day"
+        ],
+        [
+          "笔记本",
+          "laptop"
+        ],
+        [
+          "归还",
+          "return"
+        ]
+      ],
+      "notes": "Paraphrase 4 for the laptop-return policy fact."
+    },
+    {
+      "id": "sev1-ack-1",
+      "question": "一级事故必须在多久内确认？",
+      "answerable": true,
+      "relevant_sources": [
+        "incident-response-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "15",
+          "十五"
+        ],
+        [
+          "分钟",
+          "minutes"
+        ],
+        [
+          "一级",
+          "severity-one"
+        ]
+      ],
+      "notes": "Paraphrase 1 for the sev1-ack policy fact."
+    },
+    {
+      "id": "sev1-ack-2",
+      "question": "最高严重级别事故的响应确认时限是多少？",
+      "answerable": true,
+      "relevant_sources": [
+        "incident-response-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "15",
+          "十五"
+        ],
+        [
+          "分钟",
+          "minutes"
+        ],
+        [
+          "一级",
+          "severity-one"
+        ]
+      ],
+      "notes": "Paraphrase 2 for the sev1-ack policy fact."
+    },
+    {
+      "id": "sev1-ack-3",
+      "question": "How quickly must a severity-one incident be acknowledged?",
+      "answerable": true,
+      "relevant_sources": [
+        "incident-response-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "15",
+          "十五"
+        ],
+        [
+          "分钟",
+          "minutes"
+        ],
+        [
+          "一级",
+          "severity-one"
+        ]
+      ],
+      "notes": "Paraphrase 3 for the sev1-ack policy fact."
+    },
+    {
+      "id": "sev1-ack-4",
+      "question": "发生一级故障后，团队最多有几分钟确认？",
+      "answerable": true,
+      "relevant_sources": [
+        "incident-response-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "15",
+          "十五"
+        ],
+        [
+          "分钟",
+          "minutes"
+        ],
+        [
+          "一级",
+          "severity-one"
+        ]
+      ],
+      "notes": "Paraphrase 4 for the sev1-ack policy fact."
+    },
+    {
+      "id": "sev1-update-1",
+      "question": "一级事故处理中多久发布一次状态更新？",
+      "answerable": true,
+      "relevant_sources": [
+        "incident-response-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "30",
+          "三十"
+        ],
+        [
+          "分钟",
+          "minutes"
+        ],
+        [
+          "状态",
+          "status"
+        ]
+      ],
+      "notes": "Paraphrase 1 for the sev1-update policy fact."
+    },
+    {
+      "id": "sev1-update-2",
+      "question": "重大故障的进展通报频率是什么？",
+      "answerable": true,
+      "relevant_sources": [
+        "incident-response-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "30",
+          "三十"
+        ],
+        [
+          "分钟",
+          "minutes"
+        ],
+        [
+          "状态",
+          "status"
+        ]
+      ],
+      "notes": "Paraphrase 2 for the sev1-update policy fact."
+    },
+    {
+      "id": "sev1-update-3",
+      "question": "How often are status updates required during a severity-one incident?",
+      "answerable": true,
+      "relevant_sources": [
+        "incident-response-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "30",
+          "三十"
+        ],
+        [
+          "分钟",
+          "minutes"
+        ],
+        [
+          "状态",
+          "status"
+        ]
+      ],
+      "notes": "Paraphrase 3 for the sev1-update policy fact."
+    },
+    {
+      "id": "sev1-update-4",
+      "question": "一级事故尚未解决时，每隔多少分钟更新情况？",
+      "answerable": true,
+      "relevant_sources": [
+        "incident-response-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "30",
+          "三十"
+        ],
+        [
+          "分钟",
+          "minutes"
+        ],
+        [
+          "状态",
+          "status"
+        ]
+      ],
+      "notes": "Paraphrase 4 for the sev1-update policy fact."
+    },
+    {
+      "id": "root-cause-1",
+      "question": "事故解决后多久内完成根因分析？",
+      "answerable": true,
+      "relevant_sources": [
+        "incident-response-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "5",
+          "五"
+        ],
+        [
+          "工作日",
+          "business days"
+        ],
+        [
+          "根因",
+          "root-cause"
+        ]
+      ],
+      "notes": "Paraphrase 1 for the root-cause policy fact."
+    },
+    {
+      "id": "root-cause-2",
+      "question": "故障复盘中的根因分析截止时间是什么？",
+      "answerable": true,
+      "relevant_sources": [
+        "incident-response-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "5",
+          "五"
+        ],
+        [
+          "工作日",
+          "business days"
+        ],
+        [
+          "根因",
+          "root-cause"
+        ]
+      ],
+      "notes": "Paraphrase 2 for the root-cause policy fact."
+    },
+    {
+      "id": "root-cause-3",
+      "question": "When must the root-cause analysis be completed after resolution?",
+      "answerable": true,
+      "relevant_sources": [
+        "incident-response-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "5",
+          "五"
+        ],
+        [
+          "工作日",
+          "business days"
+        ],
+        [
+          "根因",
+          "root-cause"
+        ]
+      ],
+      "notes": "Paraphrase 3 for the root-cause policy fact."
+    },
+    {
+      "id": "root-cause-4",
+      "question": "事故关闭后，团队有几个工作日提交根因分析？",
+      "answerable": true,
+      "relevant_sources": [
+        "incident-response-policy.md"
+      ],
+      "required_answer_terms": [
+        [
+          "5",
+          "五"
+        ],
+        [
+          "工作日",
+          "business days"
+        ],
+        [
+          "根因",
+          "root-cause"
+        ]
+      ],
+      "notes": "Paraphrase 4 for the root-cause policy fact."
+    },
+    {
+      "id": "unanswerable-catering-budget",
       "question": "公司周五下午茶的预算是多少？",
       "answerable": false,
       "relevant_sources": [],
       "required_answer_terms": [],
-      "notes": "The corpus contains no catering policy, so the system must refuse."
+      "notes": "The fictional corpus intentionally contains no supporting policy."
+    },
+    {
+      "id": "unanswerable-parking-spaces",
+      "question": "新员工可以申请几个免费停车位？",
+      "answerable": false,
+      "relevant_sources": [],
+      "required_answer_terms": [],
+      "notes": "The fictional corpus intentionally contains no supporting policy."
+    },
+    {
+      "id": "unanswerable-gym-hours",
+      "question": "公司健身房周末几点开放？",
+      "answerable": false,
+      "relevant_sources": [],
+      "required_answer_terms": [],
+      "notes": "The fictional corpus intentionally contains no supporting policy."
+    },
+    {
+      "id": "unanswerable-pet-policy",
+      "question": "办公室是否允许员工携带宠物？",
+      "answerable": false,
+      "relevant_sources": [],
+      "required_answer_terms": [],
+      "notes": "The fictional corpus intentionally contains no supporting policy."
+    },
+    {
+      "id": "unanswerable-birthday-leave",
+      "question": "员工生日当天可以休假吗？",
+      "answerable": false,
+      "relevant_sources": [],
+      "required_answer_terms": [],
+      "notes": "The fictional corpus intentionally contains no supporting policy."
+    },
+    {
+      "id": "unanswerable-stock-options",
+      "question": "员工股票期权每年归属多少比例？",
+      "answerable": false,
+      "relevant_sources": [],
+      "required_answer_terms": [],
+      "notes": "The fictional corpus intentionally contains no supporting policy."
+    },
+    {
+      "id": "unanswerable-health-insurance",
+      "question": "商业医疗保险的年度免赔额是多少？",
+      "answerable": false,
+      "relevant_sources": [],
+      "required_answer_terms": [],
+      "notes": "The fictional corpus intentionally contains no supporting policy."
+    },
+    {
+      "id": "unanswerable-relocation",
+      "question": "异地搬迁补贴最高多少钱？",
+      "answerable": false,
+      "relevant_sources": [],
+      "required_answer_terms": [],
+      "notes": "The fictional corpus intentionally contains no supporting policy."
+    },
+    {
+      "id": "unanswerable-tuition",
+      "question": "公司每年报销多少学费？",
+      "answerable": false,
+      "relevant_sources": [],
+      "required_answer_terms": [],
+      "notes": "The fictional corpus intentionally contains no supporting policy."
+    },
+    {
+      "id": "unanswerable-phone-allowance",
+      "question": "个人手机通讯补贴每月是多少？",
+      "answerable": false,
+      "relevant_sources": [],
+      "required_answer_terms": [],
+      "notes": "The fictional corpus intentionally contains no supporting policy."
+    },
+    {
+      "id": "unanswerable-dress-code",
+      "question": "周五是否必须穿商务正装？",
+      "answerable": false,
+      "relevant_sources": [],
+      "required_answer_terms": [],
+      "notes": "The fictional corpus intentionally contains no supporting policy."
+    },
+    {
+      "id": "unanswerable-office-snacks",
+      "question": "茶水间零食每天几点补充？",
+      "answerable": false,
+      "relevant_sources": [],
+      "required_answer_terms": [],
+      "notes": "The fictional corpus intentionally contains no supporting policy."
+    },
+    {
+      "id": "unanswerable-shuttle-route",
+      "question": "公司班车经过哪些地铁站？",
+      "answerable": false,
+      "relevant_sources": [],
+      "required_answer_terms": [],
+      "notes": "The fictional corpus intentionally contains no supporting policy."
+    },
+    {
+      "id": "unanswerable-holiday-bonus",
+      "question": "春节奖金按几个月工资发放？",
+      "answerable": false,
+      "relevant_sources": [],
+      "required_answer_terms": [],
+      "notes": "The fictional corpus intentionally contains no supporting policy."
+    },
+    {
+      "id": "unanswerable-overtime-rate",
+      "question": "周末加班按多少倍工资支付？",
+      "answerable": false,
+      "relevant_sources": [],
+      "required_answer_terms": [],
+      "notes": "The fictional corpus intentionally contains no supporting policy."
+    },
+    {
+      "id": "unanswerable-meeting-room",
+      "question": "会议室最长可以连续预订几小时？",
+      "answerable": false,
+      "relevant_sources": [],
+      "required_answer_terms": [],
+      "notes": "The fictional corpus intentionally contains no supporting policy."
+    },
+    {
+      "id": "unanswerable-visitor-parking",
+      "question": "客户来访停车费由谁承担？",
+      "answerable": false,
+      "relevant_sources": [],
+      "required_answer_terms": [],
+      "notes": "The fictional corpus intentionally contains no supporting policy."
+    },
+    {
+      "id": "unanswerable-home-internet",
+      "question": "远程办公宽带每月补贴多少？",
+      "answerable": false,
+      "relevant_sources": [],
+      "required_answer_terms": [],
+      "notes": "The fictional corpus intentionally contains no supporting policy."
+    },
+    {
+      "id": "unanswerable-conference-budget",
+      "question": "参加外部技术大会的预算上限是多少？",
+      "answerable": false,
+      "relevant_sources": [],
+      "required_answer_terms": [],
+      "notes": "The fictional corpus intentionally contains no supporting policy."
+    },
+    {
+      "id": "unanswerable-language-course",
+      "question": "公司报销哪些外语课程？",
+      "answerable": false,
+      "relevant_sources": [],
+      "required_answer_terms": [],
+      "notes": "The fictional corpus intentionally contains no supporting policy."
+    },
+    {
+      "id": "unanswerable-coffee-machine",
+      "question": "咖啡机清洁由哪个团队负责？",
+      "answerable": false,
+      "relevant_sources": [],
+      "required_answer_terms": [],
+      "notes": "The fictional corpus intentionally contains no supporting policy."
+    },
+    {
+      "id": "unanswerable-childcare",
+      "question": "员工子女托管补贴标准是多少？",
+      "answerable": false,
+      "relevant_sources": [],
+      "required_answer_terms": [],
+      "notes": "The fictional corpus intentionally contains no supporting policy."
+    },
+    {
+      "id": "unanswerable-uniform",
+      "question": "前台制服多久更换一次？",
+      "answerable": false,
+      "relevant_sources": [],
+      "required_answer_terms": [],
+      "notes": "The fictional corpus intentionally contains no supporting policy."
+    },
+    {
+      "id": "unanswerable-mobile-device",
+      "question": "公司是否为所有员工配发手机？",
+      "answerable": false,
+      "relevant_sources": [],
+      "required_answer_terms": [],
+      "notes": "The fictional corpus intentionally contains no supporting policy."
+    },
+    {
+      "id": "unanswerable-volunteer-leave",
+      "question": "志愿服务假每年有几天？",
+      "answerable": false,
+      "relevant_sources": [],
+      "required_answer_terms": [],
+      "notes": "The fictional corpus intentionally contains no supporting policy."
+    },
+    {
+      "id": "unanswerable-music-license",
+      "question": "办公室播放音乐需要购买哪种许可证？",
+      "answerable": false,
+      "relevant_sources": [],
+      "required_answer_terms": [],
+      "notes": "The fictional corpus intentionally contains no supporting policy."
+    },
+    {
+      "id": "unanswerable-canteen-menu",
+      "question": "员工食堂下周一供应什么菜？",
+      "answerable": false,
+      "relevant_sources": [],
+      "required_answer_terms": [],
+      "notes": "The fictional corpus intentionally contains no supporting policy."
     }
   ]
 }

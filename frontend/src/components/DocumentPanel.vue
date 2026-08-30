@@ -10,6 +10,8 @@ const props = defineProps<{
   accessLevel: AccessLevel
 }>()
 
+const emit = defineEmits<{ documentsChanged: [documents: DocumentItem[]] }>()
+
 const documents = ref<DocumentItem[]>([])
 const loading = ref(false)
 const uploading = ref(false)
@@ -47,6 +49,7 @@ async function loadDocuments(): Promise<void> {
   errorMessage.value = ''
   try {
     documents.value = await listDocuments(props.token, props.knowledgeBaseId)
+    emit('documentsChanged', documents.value)
   } catch (error) {
     errorMessage.value = humanizeError(error)
   } finally {
@@ -116,13 +119,16 @@ function formatDate(value: string): string {
 </script>
 
 <template>
-  <section class="panel document-panel" aria-labelledby="documents-title">
+  <section class="panel document-panel document-panel--workspace" aria-labelledby="documents-title">
     <div class="panel-heading">
       <div>
         <p class="eyebrow">KNOWLEDGE SOURCES</p>
-        <h2 id="documents-title">知识文档</h2>
+        <h2 id="documents-title">知识文档管理</h2>
       </div>
-      <span class="count-badge">{{ documents.length }} 份</span>
+      <div class="panel-heading__meta">
+        <span class="count-badge">{{ documents.length }} 份</span
+        ><span class="index-badge">混合索引</span>
+      </div>
     </div>
 
     <div v-if="errorMessage" class="alert alert--error" role="alert">{{ errorMessage }}</div>
@@ -157,14 +163,17 @@ function formatDate(value: string): string {
       <p v-if="latestJob.error_message" class="job-card__error">{{ latestJob.error_message }}</p>
     </div>
 
+    <div class="document-table-heading" aria-hidden="true">
+      <span>文档名称</span><span>更新时间</span><span>索引状态</span>
+    </div>
     <div v-if="loading" class="content-loading">正在读取文档…</div>
     <ul v-else-if="documents.length" class="document-list">
       <li v-for="document in documents" :key="document.id">
         <span class="file-icon" aria-hidden="true">文</span>
         <span class="document-list__content">
           <strong>{{ document.title }}</strong>
-          <small>上传于 {{ formatDate(document.created_at) }}</small>
         </span>
+        <time>{{ formatDate(document.created_at) }}</time>
         <span class="status-dot"><i aria-hidden="true"></i> 已收录</span>
       </li>
     </ul>

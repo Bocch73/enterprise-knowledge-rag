@@ -63,8 +63,9 @@ def evaluation_dataset() -> EvaluationDataset:
 def test_checked_in_dataset_is_valid_and_versioned() -> None:
     dataset = load_dataset(DEFAULT_DATASET)
 
-    assert dataset.version == "1.0.0"
-    assert len(dataset.cases) == 5
+    assert dataset.version == "2.0.0"
+    assert len(dataset.cases) == 135
+    assert sum(case.answerable for case in dataset.cases) == 108
     assert any(not case.answerable for case in dataset.cases)
 
 
@@ -165,6 +166,10 @@ class FakeEvaluationClient:
             sources=self.searches[question],
             retrieval_method="test-hybrid",
             embedding_model="test-embedding",
+            rerank_model="test-rerank",
+            evidence_sufficient=question == "What is policy A?",
+            evidence_threshold=0.5,
+            top_rerank_score=0.95 if question == "What is policy A?" else 0.1,
         )
 
     def answer(self, knowledge_base_id: str, question: str, top_k: int) -> AnswerObservation:
@@ -220,7 +225,9 @@ def test_runner_builds_full_auditable_report_and_passes_gate() -> None:
     assert len(report.dataset_sha256) == 64
     assert report.retrieval_method == "test-hybrid"
     assert report.embedding_model == "test-embedding"
-    assert len(report.quality_gate.checks) == 8
+    assert len(report.quality_gate.checks) == 10
+    assert report.aggregate.evidence_sufficiency_accuracy == 1.0
+    assert report.rerank_model == "test-rerank"
     assert report.cases[0].retrieved_sources == ["policy-a.md", "noise.md"]
 
 
@@ -238,6 +245,8 @@ def test_runner_retrieval_mode_omits_answer_calls_and_answer_gates() -> None:
         "hit_rate_at_k",
         "mean_reciprocal_rank",
         "mean_ndcg_at_k",
+        "evidence_sufficiency_accuracy",
+        "unanswerable_rejection_rate",
     ]
 
 
@@ -248,7 +257,11 @@ def test_runner_reports_a_failed_quality_gate() -> None:
     report = run_evaluation(evaluation_dataset(), client, "kb-test")
 
     assert report.quality_gate.passed is False
-    assert all(not check.passed for check in report.quality_gate.checks)
+    checks = {check.metric: check for check in report.quality_gate.checks}
+    assert checks["hit_rate_at_k"].passed is False
+    assert checks["mean_reciprocal_rank"].passed is False
+    assert checks["mean_ndcg_at_k"].passed is False
+    assert checks["evidence_sufficiency_accuracy"].passed is True
 
 
 def test_cli_runs_full_evaluation_and_writes_report(

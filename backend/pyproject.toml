@@ -9,6 +9,7 @@ description = "Enterprise knowledge base retrieval-augmented generation backend"
 requires-python = ">=3.11,<3.12"
 dependencies = [
   "alembic==1.19.1",
+  "dashscope==1.27.2",
   "email-validator==2.3.0",
   "fastapi==0.141.1",
   "httpx==0.28.1",

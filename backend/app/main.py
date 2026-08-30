@@ -19,14 +19,32 @@ from app.modules.generation.providers import (
     DeepSeekGenerationProvider,
     UnavailableGenerationProvider,
 )
-from app.modules.indexing.providers import DeterministicHashEmbeddingProvider
+from app.modules.indexing.providers import create_embedding_provider
 from app.modules.operations.cache import CachingEmbeddingProvider, TTLVectorCache
 from app.modules.operations.metrics import OperationsMetrics
+from app.modules.operations.model_usage import ModelUsageLedger
 from app.modules.operations.providers import InstrumentedGenerationProvider
 from app.modules.operations.rate_limit import FixedWindowRateLimiter, RateLimitMiddleware
+from app.modules.operations.resilience import CircuitBreaker, RetryPolicy
 from app.modules.operations.router import router as operations_router
+from app.modules.retrieval.providers import create_rerank_provider
 
 configure_event_loop_policy()
+
+
+def _retry_policy(settings: Settings) -> RetryPolicy:
+    return RetryPolicy(
+        max_attempts=settings.external_retry_max_attempts,
+        base_delay_seconds=settings.external_retry_base_delay_seconds,
+        max_delay_seconds=settings.external_retry_max_delay_seconds,
+    )
+
+
+def _circuit_breaker(settings: Settings) -> CircuitBreaker:
+    return CircuitBreaker(
+        failure_threshold=settings.external_circuit_failure_threshold,
+        recovery_seconds=settings.external_circuit_recovery_seconds,
+    )
 
 
 def create_app(settings: Settings | None = None) -> FastAPI:
@@ -36,7 +54,12 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     database = Database(runtime_settings)
     object_storage = LocalObjectStorage(runtime_settings.object_storage_path)
     operations_metrics = OperationsMetrics()
-    base_embedding_provider = DeterministicHashEmbeddingProvider()
+    model_usage_ledger = ModelUsageLedger()
+    base_embedding_provider = create_embedding_provider(
+        runtime_settings,
+        metrics=operations_metrics,
+        ledger=model_usage_ledger,
+    )
     embedding_provider = (
         CachingEmbeddingProvider(
             base_embedding_provider,
@@ -57,6 +80,19 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             timeout_seconds=runtime_settings.deepseek_timeout_seconds,
             max_output_tokens=runtime_settings.deepseek_max_output_tokens,
             temperature=runtime_settings.deepseek_temperature,
+            retry_policy=_retry_policy(runtime_settings),
+            circuit_breaker=_circuit_breaker(runtime_settings),
+            cache_hit_cost_usd_per_million_tokens=(
+                runtime_settings.deepseek_prompt_cache_hit_cost_usd_per_million_tokens
+            ),
+            cache_miss_cost_usd_per_million_tokens=(
+                runtime_settings.deepseek_prompt_cache_miss_cost_usd_per_million_tokens
+            ),
+            output_cost_usd_per_million_tokens=(
+                runtime_settings.deepseek_output_cost_usd_per_million_tokens
+            ),
+            metrics=operations_metrics,
+            ledger=model_usage_ledger,
         )
         if runtime_settings.deepseek_api_key is not None
         else UnavailableGenerationProvider()
@@ -64,6 +100,11 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     generation_provider = InstrumentedGenerationProvider(
         base_generation_provider,
         operations_metrics,
+    )
+    rerank_provider = create_rerank_provider(
+        runtime_settings,
+        metrics=operations_metrics,
+        ledger=model_usage_ledger,
     )
     rate_limiter = FixedWindowRateLimiter()
 
@@ -91,6 +132,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     application.state.object_storage = object_storage
     application.state.embedding_provider = embedding_provider
     application.state.generation_provider = generation_provider
+    application.state.rerank_provider = rerank_provider
+    application.state.model_usage_ledger = model_usage_ledger
     application.state.operations_metrics = operations_metrics
     application.state.rate_limiter = rate_limiter
     application.state.readiness_checks = {

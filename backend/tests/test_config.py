@@ -28,6 +28,23 @@ def test_unprefixed_deepseek_key_is_loaded_as_a_secret(monkeypatch: pytest.Monke
     assert "test-deepseek-secret" not in repr(settings.deepseek_api_key)
 
 
+def test_unprefixed_dashscope_key_is_loaded_as_a_secret(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("DASHSCOPE_API_KEY", "test-dashscope-secret")
+
+    settings = Settings()  # type: ignore[call-arg]
+
+    assert settings.dashscope_api_key is not None
+    assert settings.dashscope_api_key.get_secret_value() == "test-dashscope-secret"
+    assert "test-dashscope-secret" not in repr(settings.dashscope_api_key)
+
+
+def test_dashscope_endpoint_requires_https() -> None:
+    with pytest.raises(ValidationError, match="must use HTTPS"):
+        Settings(  # type: ignore[call-arg]
+            dashscope_base_http_api_url="http://dashscope.example/api/v1",
+        )
+
+
 def test_debug_is_rejected_in_production() -> None:
     with pytest.raises(ValidationError, match="debug must be disabled in production"):
         Settings(environment="production", debug=True)  # type: ignore[call-arg]

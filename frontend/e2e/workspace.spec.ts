@@ -14,6 +14,9 @@ test.beforeEach(async ({ page }) => {
     route.fulfill({ json: { access_token: 'token-1', token_type: 'bearer', expires_in: 1800 } }),
   )
   await page.route('**/api/v1/auth/me', (route) => route.fulfill({ json: user }))
+  await page.route('**/api/v1/health/ready', (route) =>
+    route.fulfill({ json: { status: 'ready', checks: { application: 'up', database: 'up' } } }),
+  )
   await page.route('**/api/v1/knowledge-bases', async (route) => {
     if (route.request().method() === 'POST') {
       await route.fulfill({
@@ -73,8 +76,9 @@ test('logs in and renders a cited knowledge-base answer', async ({ page }) => {
   await page.getByLabel('密码').fill('long-enough-password')
   await page.getByRole('button', { name: '登录', exact: true }).click()
 
-  await expect(page.getByRole('heading', { name: '员工制度', level: 1 })).toBeVisible()
-  await expect(page.getByText('信息安全制度')).toBeVisible()
+  await expect(page.getByRole('heading', { name: '企业知识总览', level: 1 })).toBeVisible()
+  await page.locator('.primary-nav__item').nth(3).click()
+  await expect(page.getByRole('heading', { name: '知识问答实验室', level: 1 })).toBeVisible()
   await page.getByLabel('输入问题').fill('密码规则是什么？')
   await page.getByLabel('发送问题').click()
 
@@ -91,7 +95,8 @@ test('creates a new knowledge base from the sidebar', async ({ page }) => {
   await page.getByLabel('创建知识库').click()
   await page.getByLabel('知识库名称').fill('产品手册')
   await page.getByLabel('知识库说明').fill('产品资料')
-  await page.getByRole('button', { name: '创建', exact: true }).click()
+  await page.getByRole('button', { name: '创建空间', exact: true }).click()
 
-  await expect(page.getByRole('heading', { name: '产品手册', level: 1 })).toBeVisible()
+  await expect(page.getByRole('heading', { name: '文档中心', level: 1 })).toBeVisible()
+  await expect(page.getByLabel('当前知识库')).toHaveValue('kb-2')
 })

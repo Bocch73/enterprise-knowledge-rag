@@ -1,7 +1,7 @@
 # Enterprise Knowledge RAG
 
 一个面向企业内部文档的可解释、可评测知识库问答系统。系统覆盖文档上传与版本化、异步解析、文本分块、
-向量与关键词混合检索、DeepSeek 带引用回答、资料不足拒答、资源权限、审计、监控和持续交付。
+Qwen 语义向量与关键词混合检索、Qwen 重排、DeepSeek 带引用回答、证据不足拒答、资源权限、审计、监控和持续交付。
 
 [![Continuous Integration](https://github.com/Bocch73/enterprise-knowledge-rag/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Bocch73/enterprise-knowledge-rag/actions/workflows/ci.yml)
 
@@ -16,30 +16,41 @@
 ## 核心亮点
 
 - **完整文档链路**：文件校验、不可变版本、本地对象存储、持久摄取任务、解析、分块、向量写入和失败重试。
-- **混合检索**：结合 PostgreSQL 全文检索与 pgvector 向量检索，通过倒数排名融合合并不同分数空间的结果。
-- **可追溯回答**：DeepSeek 只接收检索上下文；服务端校验引用编号，资料不足或引用无效时拒答。
+- **检索与重排**：`qwen3.7-text-embedding` 语义检索与 PostgreSQL 全文检索经过倒数排名融合，再由 `qwen3-rerank` 重排候选。
+- **可追溯回答**：重排分数先执行证据充分性判断；通过后 DeepSeek 才接收上下文，服务端再校验引用编号。
 - **权限与审计**：全局角色和知识库资源角色共同限制数据访问，关键操作写入结构化审计事件。
 - **可替换提供者**：向量与生成能力通过小型接口隔离，测试使用确定性实现，不依赖外部密钥和付费额度。
 - **质量闭环**：固定语料、版本化问题集、检索指标、引用指标、拒答指标和自动质量门禁形成可重复证据。
-- **运行保护**：分级限流、向量缓存、请求编号、健康检查、Prometheus 指标和管理员任务查询。
+- **运行保护**：分级限流、向量缓存、有限重试、熔断器、外部调用编号、失败率与费用指标、健康检查和管理员任务查询。
 - **持续交付**：真实 PostgreSQL 与 pgvector 集成测试、浏览器验收、RAG 门禁、非根容器构建和版本镜像发布流程。
 
 ## 质量证据
 
 | 范围 | 当前结果 | 结论边界 |
 |---|---:|---|
-| 后端测试 | 106 个测试通过，分支覆盖率 83.26% | 本地 PostgreSQL 17 测试基线 |
-| 前端测试 | 12 个单元测试、2 个 Chrome 浏览器流程通过 | 使用隔离的浏览器模拟接口 |
-| 确定性 RAG | Top 3 命中率、平均倒数排名、归一化折损累计增益均为 1.000 | 3 份虚构文档、5 个固定问题 |
-| 部署资产 | 17 个专项测试及 YAML 格式检查通过 | 不等同于生产部署 |
+| 后端测试 | 119 个测试通过，分支覆盖率 82.56% | PostgreSQL 17 测试数据库 |
+| 前端测试 | 14 个单元测试、2 个 Chrome 浏览器流程通过 | 使用隔离的浏览器模拟接口 |
+| 固定 RAG 回归集 | 135 个问题，命中率 1.000，平均倒数排名 0.995，证据判断准确率 0.993 | 9 份虚构文档；不能外推到真实企业语料 |
+| 真实端到端调用 | Qwen 嵌入 + Qwen 重排 + DeepSeek 生成，质量门禁通过 | 658 次外部调用；调用编号完整记录，估算费用 CNY 0.166909 + USD 0.013720104 |
+| 部署资产 | 18 个专项测试及 YAML 格式检查通过 | 不等同于生产部署 |
 | 远程流水线 | 后端、前端、RAG 和两个容器镜像构建全部成功 | 镜像仅构建，未发布或上线 |
 
-评测集规模较小，当前数字用于回归检测和验证评测流程，不能解释成任意企业语料上的总体准确率。原始报告位于
+评测集是固定的虚构回归集，当前数字用于比较代码和参数版本，不能解释成任意企业语料上的总体准确率。原始报告位于
 [evaluation/reports](evaluation/reports)，指标定义与实验方法见[质量评测文档](docs/11-quality-evaluation.md)。
 
-## 产品界面
+## 产品界面概览
 
-产品页面与截图将在后续版本更新。当前仓库以可运行功能、自动化测试和评测报告作为主要验证证据。
+前端采用分层知识工作台，一级导航包含概览、知识库、文档中心和问答实验室；左侧知识空间支持多知识库切换。
+统计、文档数量、权限和数据库状态来自真实接口，不使用写死的演示数字。详细设计见
+[分层知识工作台设计](docs/product-workspace.md)。
+
+![企业知识工作台概览](docs/assets/product-overview.png)
+
+| 知识库管理 | 文档中心 |
+|---|---|
+| ![知识库管理](docs/assets/product-knowledge.png) | ![文档中心](docs/assets/product-documents.png) |
+
+![知识问答实验室](docs/assets/product-qa.png)
 
 ## 系统架构
 
@@ -49,7 +60,8 @@ flowchart LR
     frontend --> api["FastAPI API"]
     api --> database[("PostgreSQL 17 + pgvector")]
     api --> storage["Object storage abstraction"]
-    api --> model["DeepSeek provider"]
+    api --> qwen["Qwen embedding + rerank"]
+    api --> deepseek["DeepSeek generation"]
     worker["Ingestion worker"] --> database
     worker --> storage
 ```
@@ -70,7 +82,7 @@ flowchart LR
 本地开发不强制安装 Docker。PostgreSQL 与 pgvector 安装、数据库创建和环境检查见
 [开发环境说明](docs/02-development-environment.md)与[数据库权限教程](docs/05-database-and-authorization.md)。
 
-### 2. 配置并启动后端
+### 2. 首次配置后端
 
 ```powershell
 cd backend
@@ -78,11 +90,38 @@ Copy-Item .env.example .env
 py -3.11 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements-dev.lock
 .\.venv\Scripts\python.exe -m alembic upgrade head
-.\.venv\Scripts\python.exe -m app.server --reload
 ```
 
 在 `backend/.env` 中填写本地数据库连接和应用密钥。使用 DeepSeek 时，再在被 Git 忽略的本地配置中填写
 接口密钥；不要把真实密钥提交到仓库。
+
+### 3. 首次配置前端
+
+```powershell
+cd frontend
+Copy-Item .env.example .env
+npm ci
+cd ..
+```
+
+### 4. 统一启动、查看和停止
+
+在项目根目录运行：
+
+```powershell
+# 同时启动后端接口、持续文档处理进程和前端页面
+powershell -ExecutionPolicy Bypass -File .\scripts\dev-services.ps1 -Action Start
+
+# 随时查看三个独立进程的状态
+powershell -ExecutionPolicy Bypass -File .\scripts\dev-services.ps1 -Action Status
+
+# 完成开发后统一停止
+powershell -ExecutionPolicy Bypass -File .\scripts\dev-services.ps1 -Action Stop
+```
+
+统一入口不会把三项功能合并成一个程序。它们仍有各自的进程编号和日志，任一服务失败时都能单独定位。
+进程清单与日志写入被 Git 忽略的 `.dev-runtime` 目录。详细说明见
+[本地多进程运行手册](docs/operations/local-development.md)。
 
 启动后可访问：
 
@@ -90,9 +129,16 @@ py -3.11 -m venv .venv
 - 存活检查：<http://127.0.0.1:8000/api/v1/health/live>
 - 就绪检查：<http://127.0.0.1:8000/api/v1/health/ready>
 
-### 3. 启动文档工作进程
+### 5. 需要时仍可分别启动
 
-在第二个终端运行：
+统一入口是日常推荐方式，原有独立命令仍然有效。后端接口：
+
+```powershell
+cd backend
+.\.venv\Scripts\python.exe -m app.server --reload
+```
+
+持续文档处理进程：
 
 ```powershell
 cd backend
@@ -102,15 +148,11 @@ cd backend
 工作进程持续领取 PostgreSQL 中的摄取任务，完成文档解析、分块与索引。上传接口不会在网络请求内执行整个
 耗时流程。
 
-### 4. 启动前端
-
-在第三个终端运行：
+前端页面：
 
 ```powershell
-cd frontend
-Copy-Item .env.example .env
-npm ci
-npm run dev
+cd "E:\codex项目\rag1"
+powershell -ExecutionPolicy Bypass -File .\scripts\start-frontend.ps1
 ```
 
 浏览器访问 <http://127.0.0.1:5173>。
@@ -118,8 +160,8 @@ npm run dev
 ## 技术栈
 
 - **后端**：Python 3.11、FastAPI、SQLAlchemy 2、Alembic、Pydantic
-- **数据与检索**：PostgreSQL 17、pgvector、PostgreSQL 全文检索、倒数排名融合
-- **模型**：DeepSeek 生成提供者、确定性测试向量与生成提供者
+- **数据与检索**：PostgreSQL 17、pgvector、PostgreSQL 全文检索、倒数排名融合、证据阈值
+- **模型**：`qwen3.7-text-embedding` 嵌入、`qwen3-rerank` 重排、`deepseek-v4-flash` 生成；测试另有不联网替身
 - **文档处理**：pypdf、python-docx、Markdown 文本解析
 - **前端**：Vue 3、TypeScript、Vite、Pinia、Vue Router
 - **测试**：Pytest、Vitest、Playwright、Ruff、Mypy、覆盖率门禁
@@ -175,10 +217,23 @@ powershell -ExecutionPolicy Bypass -File .\scripts\verify-frontend.ps1 -EndToEnd
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\scripts\run-reference-evaluation.ps1 `
   -Mode full `
+  -EmbeddingProvider deterministic `
+  -RerankProvider deterministic `
   -GenerationProvider deterministic
 ```
 
 这个命令只使用仓库中的虚构文档，不调用 DeepSeek，也不会产生模型费用。
+
+真实端到端实验需要配置两个提供商的密钥并会产生少量费用：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\run-reference-evaluation.ps1 `
+  -Mode full `
+  -EmbeddingProvider configured `
+  -RerankProvider configured `
+  -GenerationProvider configured `
+  -Output .\evaluation\reports\reference-qwen37-rerank-deepseek-v4-flash-full-v2.json
+```
 
 ### 部署资产检查
 
@@ -198,7 +253,7 @@ powershell -ExecutionPolicy Bypass -File .\scripts\verify-deployment.ps1
 - 单进程限流和缓存尚未迁移到 Redis 等共享组件。
 - PostgreSQL 任务轮询适合当前规模，不代表高吞吐消息队列能力。
 - 备份与恢复脚本已经提供，但必须在隔离环境完成真实恢复演练后才能形成恢复证据。
-- 确定性测试提供者用于自动化验证，不代表真实语义模型效果。
+- 已有虚构语料的真实模型端到端报告，但尚未用经审批的真实业务语料进行领域验收。
 
 ## 文档
 

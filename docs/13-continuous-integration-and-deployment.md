@@ -239,7 +239,7 @@ powershell -ExecutionPolicy Bypass -File .\scripts\verify-deployment.ps1
 
 本次已经验证：
 
-- 17 个部署专项测试全部通过；
+- 18 个部署专项测试全部通过；
 - GitHub Actions、Dependabot 和 Compose 共 5 份 YAML 通过 Prettier 解析；
 - 生产配置会拒绝开启交互文档；
 - 启用指标时生产配置会拒绝缺少监控令牌；
@@ -247,8 +247,8 @@ powershell -ExecutionPolicy Bypass -File .\scripts\verify-deployment.ps1
 - 数据库未暴露宿主机端口；
 - Nginx 保留回答事件流并屏蔽公共 `/metrics`。
 
-完整验收结果为后端 105 个测试全部通过、分支覆盖率 83.26%，前端 12 个单元测试和 2 个浏览器流程
-全部通过，前端语句覆盖率 94.33%、分支覆盖率 80%；免费的确定性完整 RAG 门禁通过，Top 3 命中率、
+当前完整验收结果为后端 119 个测试全部通过、分支覆盖率 82.56%；前端最近一次基线为 14 个单元测试和 2 个浏览器流程
+全部通过，前端语句覆盖率 94.33%、分支覆盖率 80%。免费的 135 题确定性完整 RAG 门禁通过，Top 5 命中率、
 平均倒数排名和归一化折损累计增益均为 1.000。Docker 镜像只能在安装 Docker 后或推送到 GitHub 后实际
 构建，所以当前不能声称镜像运行测试已经在本机通过。
 

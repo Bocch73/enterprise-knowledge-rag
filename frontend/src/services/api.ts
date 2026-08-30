@@ -6,6 +6,7 @@ import type {
   DocumentUploadResponse,
   IngestionJob,
   KnowledgeBase,
+  ReadinessStatus,
   TokenResponse,
   User,
 } from '@/types/api'
@@ -35,7 +36,9 @@ async function request<T>(path: string, options: RequestInit = {}, token?: strin
   const headers = new Headers(options.headers)
   headers.set('Accept', 'application/json')
   if (token) headers.set('Authorization', `Bearer ${token}`)
-  if (options.body && !(options.body instanceof FormData))
+  if (options.body instanceof URLSearchParams)
+    headers.set('Content-Type', 'application/x-www-form-urlencoded;charset=UTF-8')
+  else if (options.body && !(options.body instanceof FormData))
     headers.set('Content-Type', 'application/json')
 
   const response = await fetch(`${API_PREFIX}${path}`, { ...options, headers })
@@ -100,6 +103,10 @@ export async function loginUser(email: string, password: string): Promise<TokenR
 
 export async function getCurrentUser(token: string): Promise<User> {
   return request<User>('/auth/me', {}, token)
+}
+
+export async function getReadiness(): Promise<ReadinessStatus> {
+  return request<ReadinessStatus>('/health/ready')
 }
 
 export async function listKnowledgeBases(token: string): Promise<KnowledgeBase[]> {

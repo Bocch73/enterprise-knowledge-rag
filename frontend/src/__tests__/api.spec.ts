@@ -5,6 +5,7 @@ import {
   createKnowledgeBase,
   getCurrentUser,
   getIngestionJob,
+  getReadiness,
   humanizeError,
   listDocuments,
   listKnowledgeBases,
@@ -35,6 +36,9 @@ describe('API service', () => {
       access_token: 'token-1',
     })
     const [, options] = fetchMock.mock.calls[0] as [string, RequestInit]
+    const headers = new Headers(options.headers)
+    expect(options.body).toBeInstanceOf(URLSearchParams)
+    expect(headers.get('Content-Type')).toBe('application/x-www-form-urlencoded;charset=UTF-8')
     expect(String(options.body)).toContain('username=dawn%40example.com')
     expect(String(options.body)).toContain('password=long-password')
   })
@@ -115,6 +119,7 @@ describe('API service', () => {
         ingestion_job: { id: 'job-1' },
       },
       { id: 'job-1', status: 'queued' },
+      { status: 'ready', checks: { application: 'up', database: 'up' } },
     ]
     const fetchMock = vi.fn<typeof fetch>()
     responses.forEach((payload, index) => {
@@ -137,6 +142,7 @@ describe('API service', () => {
     await listDocuments('token', 'kb-1')
     await uploadDocument('token', 'kb-1', new File(['policy'], 'policy.md'), '制度')
     await getIngestionJob('token', 'job-1')
+    await getReadiness()
 
     const uploadOptions = fetchMock.mock.calls[4]?.[1]
     expect(uploadOptions?.body).toBeInstanceOf(FormData)

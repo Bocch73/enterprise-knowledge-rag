@@ -4,10 +4,12 @@ import asyncio
 from typing import cast
 from uuid import UUID, uuid4
 
+from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
 from app.core.config import Settings
 from app.db.session import Database
+from app.modules.indexing.providers import UnavailableEmbeddingProvider
 from app.modules.ingestion.worker import process_next_job
 from app.modules.retrieval.fusion import (
     RankedCandidate,
@@ -97,8 +99,11 @@ def test_hybrid_search_returns_transparent_ranked_results(
 
     assert response.status_code == 200, response.text
     payload = response.json()
-    assert payload["retrieval_method"] == "hybrid_reciprocal_rank_fusion"
-    assert payload["embedding_model"] == "deterministic-hash-v1"
+    assert payload["retrieval_method"] == "hybrid_reciprocal_rank_fusion_with_rerank"
+    assert payload["embedding_model"] == "test-deterministic-embedding-v1"
+    assert payload["rerank_model"] == "test-deterministic-rerank-v1"
+    assert payload["evidence_sufficient"] is True
+    assert payload["top_rerank_score"] >= payload["evidence_threshold"]
     assert payload["results"]
     first = payload["results"][0]
     security_document = cast(dict[str, object], security["document"])
@@ -106,6 +111,8 @@ def test_hybrid_search_returns_transparent_ranked_results(
     assert first["keyword_rank"] == 1
     assert first["vector_rank"] is not None
     assert first["fused_score"] > 0
+    assert first["rerank_rank"] == 1
+    assert first["rerank_score"] is not None
     assert "embedding" not in first
 
     special_characters = client.post(
@@ -127,6 +134,25 @@ def test_hybrid_search_returns_transparent_ranked_results(
     )
     assert blank_query.status_code == 422
     assert excessive_limit.status_code == 422
+
+
+def test_search_returns_safe_error_when_embedding_provider_is_unavailable(
+    client: TestClient,
+    app: FastAPI,
+) -> None:
+    register_user(client)
+    token = login_user(client)
+    knowledge_base_id = create_knowledge_base(client, token)
+    app.state.embedding_provider = UnavailableEmbeddingProvider()
+
+    response = client.post(
+        f"/api/v1/knowledge-bases/{knowledge_base_id}/search",
+        headers=authorization_header(token),
+        json={"query": "security policy"},
+    )
+
+    assert response.status_code == 503
+    assert response.json()["error"]["code"] == "embedding_provider_unavailable"
 
 
 def test_search_enforces_membership_and_knowledge_base_isolation(

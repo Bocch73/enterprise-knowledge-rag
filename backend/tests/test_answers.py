@@ -14,6 +14,7 @@ from app.modules.answers.models import AnswerCitation, GroundedAnswer
 from app.modules.answers.service import REFUSAL_ANSWER
 from app.modules.generation.providers import GenerationResult, UnavailableGenerationProvider
 from app.modules.ingestion.worker import process_next_job
+from app.modules.retrieval.providers import RerankItem, RerankResult
 from tests.test_authentication import authorization_header, login_user, register_user
 from tests.test_document_ingestion import create_knowledge_base, upload_markdown
 
@@ -33,6 +34,25 @@ class FakeGenerationProvider:
             model=self.name,
             prompt_tokens=20,
             completion_tokens=8,
+        )
+
+
+@dataclass
+class LowEvidenceRerankProvider:
+    name: str = "low-evidence-rerank"
+
+    async def rerank(
+        self,
+        *,
+        query: str,
+        documents: list[str],
+        top_n: int,
+    ) -> RerankResult:
+        del query, top_n
+        return RerankResult(
+            items=[RerankItem(index=0, relevance_score=0.2)] if documents else [],
+            model=self.name,
+            request_id="low-evidence-test",
         )
 
 
@@ -176,6 +196,37 @@ def test_empty_knowledge_base_refuses_without_calling_model(
     assert response.json()["refused"] is True
     assert response.json()["model"] == "unconfigured"
     assert response.json()["citations"] == []
+
+
+def test_low_rerank_score_refuses_without_calling_generation(
+    client: TestClient,
+    app: FastAPI,
+    settings: Settings,
+) -> None:
+    register_user(client)
+    token = login_user(client)
+    knowledge_base_id = create_knowledge_base(client, token)
+    prepare_source(client, settings, token, knowledge_base_id)
+    app.state.rerank_provider = LowEvidenceRerankProvider()
+    app.state.generation_provider = UnavailableGenerationProvider()
+
+    search = client.post(
+        f"/api/v1/knowledge-bases/{knowledge_base_id}/search",
+        headers=authorization_header(token),
+        json={"query": "公司下午茶预算是多少？", "top_k": 5},  # noqa: RUF001
+    )
+    answer = client.post(
+        f"/api/v1/knowledge-bases/{knowledge_base_id}/answers",
+        headers=authorization_header(token),
+        json={"question": "公司下午茶预算是多少？", "top_k": 5},  # noqa: RUF001
+    )
+
+    assert search.status_code == 200
+    assert search.json()["evidence_sufficient"] is False
+    assert search.json()["top_rerank_score"] == 0.2
+    assert search.json()["results"] == []
+    assert answer.status_code == 201
+    assert answer.json()["refused"] is True
 
 
 def test_answer_requires_authorized_knowledge_base_and_configured_provider(

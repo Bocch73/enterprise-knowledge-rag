@@ -2,7 +2,9 @@ import { flushPromises, mount } from '@vue/test-utils'
 import { describe, expect, it, vi } from 'vitest'
 
 import AnswerPanel from '@/components/AnswerPanel.vue'
+import KnowledgeCatalog from '@/components/KnowledgeCatalog.vue'
 import KnowledgeSidebar from '@/components/KnowledgeSidebar.vue'
+import OverviewDashboard from '@/components/OverviewDashboard.vue'
 import { streamAnswer } from '@/services/api'
 import type { AnswerStreamResult } from '@/types/api'
 
@@ -47,6 +49,44 @@ describe('knowledge sidebar', () => {
     expect(wrapper.emitted('create')?.[0]).toEqual([
       { name: '安全制度', description: '企业安全要求' },
     ])
+  })
+})
+
+describe('layered workspace', () => {
+  it('renders real overview totals and routes quick actions', async () => {
+    const wrapper = mount(OverviewDashboard, {
+      props: {
+        knowledgeBases: [knowledgeBase],
+        documentCounts: { 'kb-1': 3 },
+        readiness: { status: 'ready', checks: { application: 'up', database: 'up' } },
+        loading: false,
+        userName: 'Dawn',
+      },
+    })
+
+    expect(wrapper.text()).toContain('Dawn，欢迎回来')
+    expect(wrapper.text()).toContain('3')
+    expect(wrapper.text()).toContain('数据库 已连接')
+    await wrapper.get('.overview-hero__actions .button--mint').trigger('click')
+    expect(wrapper.emitted('navigate')?.[0]).toEqual(['documents'])
+  })
+
+  it('searches knowledge spaces and opens their document center', async () => {
+    const wrapper = mount(KnowledgeCatalog, {
+      props: {
+        knowledgeBases: [knowledgeBase],
+        documentCounts: { 'kb-1': 2 },
+        selectedId: 'kb-1',
+        creating: false,
+      },
+    })
+
+    expect(wrapper.text()).toContain('2 份')
+    await wrapper.get('input[type="search"]').setValue('不存在')
+    expect(wrapper.text()).toContain('没有匹配的知识库')
+    await wrapper.get('input[type="search"]').setValue('员工')
+    await wrapper.get('.knowledge-card footer button').trigger('click')
+    expect(wrapper.emitted('openDocuments')?.[0]).toEqual(['kb-1'])
   })
 })
 

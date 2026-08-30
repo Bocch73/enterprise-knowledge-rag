@@ -1,5 +1,6 @@
 # Direct runtime dependencies. Exact transitive versions are generated in requirements.lock.
 alembic==1.19.1
+dashscope==1.27.2
 email-validator==2.3.0
 fastapi==0.141.1
 httpx==0.28.1

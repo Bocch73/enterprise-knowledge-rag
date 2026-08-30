@@ -23,6 +23,8 @@ class EvaluationThresholds(StrictModel):
     answer_term_coverage: float = Field(default=0.75, ge=0.0, le=1.0)
     refusal_accuracy: float = Field(default=0.90, ge=0.0, le=1.0)
     grounded_answer_rate: float = Field(default=0.90, ge=0.0, le=1.0)
+    evidence_sufficiency_accuracy: float = Field(default=0.85, ge=0.0, le=1.0)
+    unanswerable_rejection_rate: float = Field(default=0.80, ge=0.0, le=1.0)
 
 
 class EvaluationDocument(StrictModel):
@@ -120,6 +122,10 @@ class SearchObservation(StrictModel):
     sources: list[str]
     retrieval_method: str
     embedding_model: str
+    rerank_model: str = "unconfigured"
+    evidence_sufficient: bool = True
+    evidence_threshold: float = 0.0
+    top_rerank_score: float | None = None
 
 
 class RetrievalScores(StrictModel):
@@ -144,6 +150,11 @@ class EvaluationCaseResult(StrictModel):
     answerable: bool
     relevant_sources: list[str]
     retrieved_sources: list[str]
+    rerank_model: str
+    evidence_sufficient: bool
+    evidence_threshold: float
+    top_rerank_score: float | None
+    evidence_decision_correct: float
     retrieval_latency_ms: float
     retrieval: RetrievalScores | None
     answer_latency_ms: float | None = None
@@ -164,6 +175,9 @@ class AggregateScores(StrictModel):
     mean_ndcg_at_k: float
     retrieval_latency_p50_ms: float
     retrieval_latency_p95_ms: float
+    evidence_sufficiency_accuracy: float
+    answerable_acceptance_rate: float
+    unanswerable_rejection_rate: float
     citation_precision: float | None = None
     citation_recall: float | None = None
     answer_term_coverage: float | None = None
@@ -186,7 +200,7 @@ class QualityGate(StrictModel):
 
 
 class EvaluationReport(StrictModel):
-    schema_version: Literal["1.0"] = "1.0"
+    schema_version: Literal["2.0"] = "2.0"
     generated_at: datetime
     dataset_name: str
     dataset_version: str
@@ -197,6 +211,48 @@ class EvaluationReport(StrictModel):
     top_k: int
     retrieval_method: str
     embedding_model: str
+    rerank_model: str
+    generation_model: str | None = None
+    experiment_configuration: "ExperimentConfiguration | None" = None
+    external_calls: list["ExternalModelCallRecord"] = Field(default_factory=list)
+    estimated_costs: dict[str, float] = Field(default_factory=dict)
     aggregate: AggregateScores
     quality_gate: QualityGate
     cases: list[EvaluationCaseResult]
+
+
+class ExperimentConfiguration(StrictModel):
+    """Settings that can materially change one experiment's result."""
+
+    chunk_size_characters: int
+    chunk_overlap_characters: int
+    retrieval_candidate_limit: int
+    retrieval_rrf_k: int
+    retrieval_evidence_min_score: float
+    answer_context_max_characters: int
+    top_k: int
+    embedding_model: str
+    embedding_dimensions: int
+    rerank_model: str
+    generation_model: str | None
+    generation_temperature: float | None
+    generation_max_output_tokens: int | None
+    answer_prompt_version: str
+    pricing_basis: dict[str, float]
+
+
+class ExternalModelCallRecord(StrictModel):
+    """One content-free provider call record included for auditability."""
+
+    occurred_at: datetime
+    operation: str
+    provider: str
+    model: str
+    outcome: Literal["success", "error", "circuit_open"]
+    request_id: str | None
+    input_tokens: int | None
+    output_tokens: int | None
+    attempts: int
+    latency_ms: float
+    estimated_cost: float | None
+    currency: str | None

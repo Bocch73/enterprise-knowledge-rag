@@ -21,9 +21,9 @@ from app.modules.indexing.chunking import TextChunk, split_text
 from app.modules.indexing.models import DocumentChunk
 from app.modules.indexing.providers import (
     EMBEDDING_DIMENSIONS,
-    DeterministicHashEmbeddingProvider,
     EmbeddingProvider,
     EmbeddingProviderError,
+    create_embedding_provider,
 )
 from app.modules.ingestion.models import IngestionJob
 from app.modules.ingestion.parsers import DocumentParsingError, ParsedResult, parse_document
@@ -279,7 +279,7 @@ async def process_next_job(
 ) -> UUID | None:
     """Claim and process at most one job, returning its identifier when found."""
     selected_storage = storage or LocalObjectStorage(settings.object_storage_path)
-    selected_embedding_provider = embedding_provider or DeterministicHashEmbeddingProvider()
+    selected_embedding_provider = embedding_provider or create_embedding_provider(settings)
     selected_worker_id = worker_id or f"{socket.gethostname()}-{id(database)}"
     job_id = await claim_next_job(database, selected_worker_id)
     if job_id is None:

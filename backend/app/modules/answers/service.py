@@ -14,10 +14,12 @@ from app.modules.identity.models import User
 from app.modules.indexing.providers import EmbeddingProvider
 from app.modules.operations.metrics import OperationsMetrics
 from app.modules.retrieval.fusion import FusedCandidate
+from app.modules.retrieval.providers import RerankProvider
 from app.modules.retrieval.service import hybrid_search
 
 REFUSAL_ANSWER = "根据当前知识库内容，我无法回答这个问题。"
-RETRIEVAL_METHOD = "hybrid_reciprocal_rank_fusion"
+RETRIEVAL_METHOD = "hybrid_reciprocal_rank_fusion_with_rerank"
+ANSWER_PROMPT_VERSION = "grounded-answer-v2"
 _CITATION_PATTERN = re.compile(r"\[S([1-9]\d*)\]")
 _SYSTEM_PROMPT = f"""你是企业知识库问答助手。请严格遵守以下规则：
 1. 只能依据用户消息中 <sources> 标签内的资料回答，不得补充外部知识。
@@ -45,15 +47,17 @@ async def create_grounded_answer(
     top_k: int,
     candidate_limit: int,
     rank_constant: int,
+    evidence_min_score: float,
     context_max_characters: int,
     embedding_provider: EmbeddingProvider,
+    rerank_provider: RerankProvider,
     generation_provider: GenerationProvider,
     operations_metrics: OperationsMetrics | None = None,
 ) -> GroundedAnswerResponse:
     """Produce an answer that can cite only retrieved, authorized passages."""
     retrieval_started = perf_counter()
     try:
-        retrieved = await hybrid_search(
+        retrieval = await hybrid_search(
             session,
             user,
             knowledge_base_id,
@@ -62,11 +66,13 @@ async def create_grounded_answer(
             candidate_limit=candidate_limit,
             rank_constant=rank_constant,
             embedding_provider=embedding_provider,
+            rerank_provider=rerank_provider,
+            evidence_min_score=evidence_min_score,
         )
     finally:
         if operations_metrics is not None:
             operations_metrics.observe_retrieval(perf_counter() - retrieval_started)
-    sources = _fit_sources(retrieved, context_max_characters)
+    sources = _fit_sources(retrieval.candidates, context_max_characters)
     if sources:
         generation = await generation_provider.generate(
             system_prompt=_SYSTEM_PROMPT,

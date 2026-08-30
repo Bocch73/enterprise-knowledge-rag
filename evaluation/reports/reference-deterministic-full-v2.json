@@ -1,0 +1,4971 @@
+{
+  "schema_version": "2.0",
+  "generated_at": "2026-08-30T04:25:20.301094Z",
+  "dataset_name": "Enterprise policy RAG baseline",
+  "dataset_version": "2.0.0",
+  "dataset_sha256": "e0d4c5671c5565c92ec35c052b0dfe2854fbde3f9b2f85515cac214c623cba21",
+  "corpus": [
+    {
+      "filename": "data-retention-policy.md",
+      "sha256": "47a3ca4bdbd0a13e07b244b3b98944ea9428dcae984446df9b67811302d9811f"
+    },
+    {
+      "filename": "employee-expense-policy.md",
+      "sha256": "5fdde5dcd9f771432c2c6a08e6a680c32a601b0ac5725ae9855b73e5a4922671"
+    },
+    {
+      "filename": "incident-response-policy.md",
+      "sha256": "2517b263d0fae194e78347d32604bb59888ccee9992df287c46cabfd5a5a792a"
+    },
+    {
+      "filename": "leave-policy.md",
+      "sha256": "756cae574c98a1bfe80a117a4639a67a1a1bee3f5f9e0a39a55f5c9a9e6f044e"
+    },
+    {
+      "filename": "onboarding-policy.md",
+      "sha256": "87018076066135a5118c3b295f1f62f181ddbf3d67bba1a93f1de6fe410d7504"
+    },
+    {
+      "filename": "procurement-policy.md",
+      "sha256": "487499177ffcb6ad13e88bdceba205d483dd7d416c66bb768d285ec3c18b8cca"
+    },
+    {
+      "filename": "remote-work-policy.md",
+      "sha256": "e6c5895733d2e42c7177f3dbbdbc47ab8a06efb8439a80cf3d30fca3401758eb"
+    },
+    {
+      "filename": "security-policy.md",
+      "sha256": "2504230a30c604d402cbc041be98eb53d769979969cbfad755530b89d50c9f62"
+    },
+    {
+      "filename": "travel-policy.md",
+      "sha256": "79fedb8b772a3aef6302e6e8034e21dfb81dfb9544d84fa9dbe7aba6edc17009"
+    }
+  ],
+  "knowledge_base_id": "616f895e-ad0a-429c-8465-759cdf199b63",
+  "mode": "full",
+  "top_k": 5,
+  "retrieval_method": "hybrid_reciprocal_rank_fusion_with_rerank",
+  "embedding_model": "test-deterministic-embedding-v1",
+  "rerank_model": "reference-deterministic-rerank-v1",
+  "generation_model": "reference-deterministic-v1",
+  "experiment_configuration": {
+    "chunk_size_characters": 800,
+    "chunk_overlap_characters": 120,
+    "retrieval_candidate_limit": 30,
+    "retrieval_rrf_k": 60,
+    "retrieval_evidence_min_score": 0.54,
+    "answer_context_max_characters": 12000,
+    "top_k": 5,
+    "embedding_model": "test-deterministic-embedding-v1",
+    "embedding_dimensions": 1024,
+    "rerank_model": "reference-deterministic-rerank-v1",
+    "generation_model": "reference-deterministic-v1",
+    "generation_temperature": 0.1,
+    "generation_max_output_tokens": 800,
+    "answer_prompt_version": "grounded-answer-v2",
+    "pricing_basis": {
+      "dashscope_embedding_cny_per_million_tokens": 0.5,
+      "dashscope_rerank_cny_per_million_tokens": 0.5,
+      "deepseek_cache_hit_usd_per_million_tokens": 0.014,
+      "deepseek_cache_miss_usd_per_million_tokens": 0.44,
+      "deepseek_output_usd_per_million_tokens": 1.32
+    }
+  },
+  "external_calls": [],
+  "estimated_costs": {},
+  "aggregate": {
+    "evaluated_cases": 135,
+    "answerable_cases": 108,
+    "hit_rate_at_k": 1.0,
+    "mean_precision_at_k": 1.0,
+    "mean_recall_at_k": 1.0,
+    "mean_reciprocal_rank": 1.0,
+    "mean_ndcg_at_k": 1.0,
+    "retrieval_latency_p50_ms": 22.485,
+    "retrieval_latency_p95_ms": 24.644,
+    "evidence_sufficiency_accuracy": 1.0,
+    "answerable_acceptance_rate": 1.0,
+    "unanswerable_rejection_rate": 1.0,
+    "citation_precision": 1.0,
+    "citation_recall": 1.0,
+    "answer_term_coverage": 1.0,
+    "refusal_accuracy": 1.0,
+    "grounded_answer_rate": 1.0,
+    "answer_latency_p50_ms": 24.724,
+    "answer_latency_p95_ms": 27.151
+  },
+  "quality_gate": {
+    "passed": true,
+    "checks": [
+      {
+        "metric": "hit_rate_at_k",
+        "actual": 1.0,
+        "required": 0.9,
+        "passed": true
+      },
+      {
+        "metric": "mean_reciprocal_rank",
+        "actual": 1.0,
+        "required": 0.8,
+        "passed": true
+      },
+      {
+        "metric": "mean_ndcg_at_k",
+        "actual": 1.0,
+        "required": 0.8,
+        "passed": true
+      },
+      {
+        "metric": "evidence_sufficiency_accuracy",
+        "actual": 1.0,
+        "required": 0.85,
+        "passed": true
+      },
+      {
+        "metric": "unanswerable_rejection_rate",
+        "actual": 1.0,
+        "required": 0.75,
+        "passed": true
+      },
+      {
+        "metric": "citation_precision",
+        "actual": 1.0,
+        "required": 0.9,
+        "passed": true
+      },
+      {
+        "metric": "citation_recall",
+        "actual": 1.0,
+        "required": 0.85,
+        "passed": true
+      },
+      {
+        "metric": "answer_term_coverage",
+        "actual": 1.0,
+        "required": 0.8,
+        "passed": true
+      },
+      {
+        "metric": "refusal_accuracy",
+        "actual": 1.0,
+        "required": 0.85,
+        "passed": true
+      },
+      {
+        "metric": "grounded_answer_rate",
+        "actual": 1.0,
+        "required": 0.9,
+        "passed": true
+      }
+    ]
+  },
+  "cases": [
+    {
+      "id": "annual-leave-1",
+      "question": "全职员工每年有多少天带薪年假？",
+      "answerable": true,
+      "relevant_sources": [
+        "leave-policy.md"
+      ],
+      "retrieved_sources": [
+        "leave-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 37.299,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 39.143,
+      "answer": "15；年假。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "leave-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "annual-leave-2",
+      "question": "年度带薪年假额度是多少？",
+      "answerable": true,
+      "relevant_sources": [
+        "leave-policy.md"
+      ],
+      "retrieved_sources": [
+        "leave-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 24.404,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 25.529,
+      "answer": "15；年假。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "leave-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "annual-leave-3",
+      "question": "How many paid annual leave days does a full-time employee receive?",
+      "answerable": true,
+      "relevant_sources": [
+        "leave-policy.md"
+      ],
+      "retrieved_sources": [
+        "leave-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 26.192,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 28.417,
+      "answer": "15；年假。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "leave-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "annual-leave-4",
+      "question": "请说明全职员工一个日历年的年假天数。",
+      "answerable": true,
+      "relevant_sources": [
+        "leave-policy.md"
+      ],
+      "retrieved_sources": [
+        "leave-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 23.583,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 23.887,
+      "answer": "15；年假。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "leave-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "long-leave-notice-1",
+      "question": "连续请假三天需要提前多久申请？",
+      "answerable": true,
+      "relevant_sources": [
+        "leave-policy.md"
+      ],
+      "retrieved_sources": [
+        "leave-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 21.779,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 25.25,
+      "answer": "3；7；提前。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "leave-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "long-leave-notice-2",
+      "question": "三天或更长的连续休假应何时提交？",
+      "answerable": true,
+      "relevant_sources": [
+        "leave-policy.md"
+      ],
+      "retrieved_sources": [
+        "leave-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 21.437,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 24.826,
+      "answer": "3；7；提前。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "leave-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "long-leave-notice-3",
+      "question": "What notice is required for three or more consecutive leave days?",
+      "answerable": true,
+      "relevant_sources": [
+        "leave-policy.md"
+      ],
+      "retrieved_sources": [
+        "leave-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 26.734,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 29.342,
+      "answer": "3；7；提前。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "leave-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "long-leave-notice-4",
+      "question": "员工计划连续休假四天，最迟要提前几天申请？",
+      "answerable": true,
+      "relevant_sources": [
+        "leave-policy.md"
+      ],
+      "retrieved_sources": [
+        "leave-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 22.672,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 24.276,
+      "answer": "3；7；提前。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "leave-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "leave-carryover-1",
+      "question": "未使用年假最多能结转多少天，何时前用完？",
+      "answerable": true,
+      "relevant_sources": [
+        "leave-policy.md"
+      ],
+      "retrieved_sources": [
+        "leave-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 23.628,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 25.261,
+      "answer": "5；3 月 31；结转。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "leave-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "leave-carryover-2",
+      "question": "年假结转上限和使用截止日是什么？",
+      "answerable": true,
+      "relevant_sources": [
+        "leave-policy.md"
+      ],
+      "retrieved_sources": [
+        "leave-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 23.527,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 24.727,
+      "answer": "5；3 月 31；结转。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "leave-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "leave-carryover-3",
+      "question": "What is the annual-leave carryover limit and deadline?",
+      "answerable": true,
+      "relevant_sources": [
+        "leave-policy.md"
+      ],
+      "retrieved_sources": [
+        "leave-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 21.703,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 24.237,
+      "answer": "5；3 月 31；结转。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "leave-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "leave-carryover-4",
+      "question": "上一年度剩余年假可以留几天到哪一天？",
+      "answerable": true,
+      "relevant_sources": [
+        "leave-policy.md"
+      ],
+      "retrieved_sources": [
+        "leave-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 21.467,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 25.35,
+      "answer": "5；3 月 31；结转。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "leave-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "password-rotation-1",
+      "question": "SEC-104 对密码轮换有什么要求？",
+      "answerable": true,
+      "relevant_sources": [
+        "security-policy.md"
+      ],
+      "retrieved_sources": [
+        "security-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 22.839,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 24.25,
+      "answer": "SEC-104；90；密码。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "security-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "password-rotation-2",
+      "question": "员工账户密码多久必须更换一次？",
+      "answerable": true,
+      "relevant_sources": [
+        "security-policy.md"
+      ],
+      "retrieved_sources": [
+        "security-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 21.401,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 26.043,
+      "answer": "SEC-104；90；密码。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "security-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "password-rotation-3",
+      "question": "What password rotation interval does SEC-104 require?",
+      "answerable": true,
+      "relevant_sources": [
+        "security-policy.md"
+      ],
+      "retrieved_sources": [
+        "security-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 22.38,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 25.613,
+      "answer": "SEC-104；90；密码。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "security-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "password-rotation-4",
+      "question": "请说明安全制度中的密码更新周期和制度编号。",
+      "answerable": true,
+      "relevant_sources": [
+        "security-policy.md"
+      ],
+      "retrieved_sources": [
+        "security-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 23.416,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 25.108,
+      "answer": "SEC-104；90；密码。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "security-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "remote-mfa-1",
+      "question": "员工远程访问公司系统需要什么认证？",
+      "answerable": true,
+      "relevant_sources": [
+        "security-policy.md"
+      ],
+      "retrieved_sources": [
+        "security-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 22.972,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 25.786,
+      "answer": "多因素。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "security-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "remote-mfa-2",
+      "question": "从公司外部登录必须启用哪种认证方式？",
+      "answerable": true,
+      "relevant_sources": [
+        "security-policy.md"
+      ],
+      "retrieved_sources": [
+        "security-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 22.081,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 24.356,
+      "answer": "多因素。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "security-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "remote-mfa-3",
+      "question": "What authentication is required for remote access?",
+      "answerable": true,
+      "relevant_sources": [
+        "security-policy.md"
+      ],
+      "retrieved_sources": [
+        "security-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 26.081,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 24.602,
+      "answer": "多因素。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "security-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "remote-mfa-4",
+      "question": "远程连接企业系统能否只使用密码？需要什么额外认证？",
+      "answerable": true,
+      "relevant_sources": [
+        "security-policy.md"
+      ],
+      "retrieved_sources": [
+        "security-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 22.163,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 24.317,
+      "answer": "多因素。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "security-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "credential-exposure-1",
+      "question": "发现凭证可能泄露后多久内向谁报告？",
+      "answerable": true,
+      "relevant_sources": [
+        "security-policy.md"
+      ],
+      "retrieved_sources": [
+        "security-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 23.331,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 26.384,
+      "answer": "1 小时；安全团队；泄露。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "security-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "credential-exposure-2",
+      "question": "账号凭证疑似暴露的报告时限和接收部门是什么？",
+      "answerable": true,
+      "relevant_sources": [
+        "security-policy.md"
+      ],
+      "retrieved_sources": [
+        "security-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 23.778,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 25.399,
+      "answer": "1 小时；安全团队；泄露。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "security-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "credential-exposure-3",
+      "question": "When and to whom must suspected credential exposure be reported?",
+      "answerable": true,
+      "relevant_sources": [
+        "security-policy.md"
+      ],
+      "retrieved_sources": [
+        "security-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 22.217,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 24.635,
+      "answer": "1 小时；安全团队；泄露。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "security-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "credential-exposure-4",
+      "question": "员工怀疑密码被窃取，应在多长时间内通知哪个团队？",
+      "answerable": true,
+      "relevant_sources": [
+        "security-policy.md"
+      ],
+      "retrieved_sources": [
+        "security-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 23.726,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 25.713,
+      "answer": "1 小时；安全团队；泄露。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "security-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "travel-receipt-1",
+      "question": "超过 200 元的差旅报销需要提供什么？",
+      "answerable": true,
+      "relevant_sources": [
+        "travel-policy.md"
+      ],
+      "retrieved_sources": [
+        "travel-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 21.86,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 24.275,
+      "answer": "200；收据；经理。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "travel-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "travel-receipt-2",
+      "question": "高于二百元的出差费用报销有哪些凭证和审批要求？",
+      "answerable": true,
+      "relevant_sources": [
+        "travel-policy.md"
+      ],
+      "retrieved_sources": [
+        "travel-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 23.986,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 24.504,
+      "answer": "200；收据；经理。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "travel-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "travel-receipt-3",
+      "question": "What is required for a travel claim above 200 yuan?",
+      "answerable": true,
+      "relevant_sources": [
+        "travel-policy.md"
+      ],
+      "retrieved_sources": [
+        "travel-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 21.522,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 23.646,
+      "answer": "200；收据；经理。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "travel-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "travel-receipt-4",
+      "question": "差旅费用为 350 元时，需要收据和谁的批准？",
+      "answerable": true,
+      "relevant_sources": [
+        "travel-policy.md"
+      ],
+      "retrieved_sources": [
+        "travel-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 23.878,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 24.611,
+      "answer": "200；收据；经理。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "travel-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "travel-deadline-1",
+      "question": "出差回来后多少天内提交差旅费用？",
+      "answerable": true,
+      "relevant_sources": [
+        "travel-policy.md"
+      ],
+      "retrieved_sources": [
+        "travel-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 21.969,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 23.997,
+      "answer": "10；日历日；提交。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "travel-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "travel-deadline-2",
+      "question": "差旅报销的提交截止时间如何计算？",
+      "answerable": true,
+      "relevant_sources": [
+        "travel-policy.md"
+      ],
+      "retrieved_sources": [
+        "travel-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 22.682,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 24.451,
+      "answer": "10；日历日；提交。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "travel-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "travel-deadline-3",
+      "question": "When must travel expenses be submitted after returning?",
+      "answerable": true,
+      "relevant_sources": [
+        "travel-policy.md"
+      ],
+      "retrieved_sources": [
+        "travel-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 21.529,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 23.952,
+      "answer": "10；日历日；提交。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "travel-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "travel-deadline-4",
+      "question": "员工返程后最晚几个日历日内报销？",
+      "answerable": true,
+      "relevant_sources": [
+        "travel-policy.md"
+      ],
+      "retrieved_sources": [
+        "travel-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 21.601,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 25.883,
+      "answer": "10；日历日；提交。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "travel-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "hotel-cap-1",
+      "question": "国内出差住宿每晚上限是多少，超标怎么办？",
+      "answerable": true,
+      "relevant_sources": [
+        "travel-policy.md"
+      ],
+      "retrieved_sources": [
+        "travel-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 22.355,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 25.264,
+      "answer": "600；总监；书面。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "travel-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "hotel-cap-2",
+      "question": "酒店费用超过标准时需要哪一级书面批准？",
+      "answerable": true,
+      "relevant_sources": [
+        "travel-policy.md"
+      ],
+      "retrieved_sources": [
+        "travel-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 21.869,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 24.625,
+      "answer": "600；总监；书面。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "travel-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "hotel-cap-3",
+      "question": "What is the domestic hotel cap and approval for an exception?",
+      "answerable": true,
+      "relevant_sources": [
+        "travel-policy.md"
+      ],
+      "retrieved_sources": [
+        "travel-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 22.477,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 24.401,
+      "answer": "600；总监；书面。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "travel-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "hotel-cap-4",
+      "question": "国内差旅住店每晚 700 元是否需要额外审批？",
+      "answerable": true,
+      "relevant_sources": [
+        "travel-policy.md"
+      ],
+      "retrieved_sources": [
+        "travel-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 23.322,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 25.028,
+      "answer": "600；总监；书面。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "travel-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "remote-days-1",
+      "question": "员工每周最多可以远程办公几天，需要谁批准？",
+      "answerable": true,
+      "relevant_sources": [
+        "remote-work-policy.md"
+      ],
+      "retrieved_sources": [
+        "remote-work-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 23.346,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 24.459,
+      "answer": "3；经理；远程。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "remote-work-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "remote-days-2",
+      "question": "远程办公的每周天数上限和审批人是什么？",
+      "answerable": true,
+      "relevant_sources": [
+        "remote-work-policy.md"
+      ],
+      "retrieved_sources": [
+        "remote-work-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 23.224,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 25.413,
+      "answer": "3；经理；远程。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "remote-work-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "remote-days-3",
+      "question": "How many remote-work days per week are allowed and who approves them?",
+      "answerable": true,
+      "relevant_sources": [
+        "remote-work-policy.md"
+      ],
+      "retrieved_sources": [
+        "remote-work-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 22.937,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 26.459,
+      "answer": "3；经理；远程。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "remote-work-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "remote-days-4",
+      "question": "每周在家办公四天是否符合规定？正常上限是多少？",
+      "answerable": true,
+      "relevant_sources": [
+        "remote-work-policy.md"
+      ],
+      "retrieved_sources": [
+        "remote-work-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 72.815,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 24.377,
+      "answer": "3；经理；远程。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "remote-work-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "core-hours-1",
+      "question": "远程办公的核心协作时间是什么？",
+      "answerable": true,
+      "relevant_sources": [
+        "remote-work-policy.md"
+      ],
+      "retrieved_sources": [
+        "remote-work-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 24.508,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 27.036,
+      "answer": "10:00；16:00；核心。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "remote-work-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "core-hours-2",
+      "question": "员工每天必须在线协作的时间段是几点到几点？",
+      "answerable": true,
+      "relevant_sources": [
+        "remote-work-policy.md"
+      ],
+      "retrieved_sources": [
+        "remote-work-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 24.105,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 26.294,
+      "answer": "10:00；16:00；核心。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "remote-work-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "core-hours-3",
+      "question": "What are the core collaboration hours for remote workers?",
+      "answerable": true,
+      "relevant_sources": [
+        "remote-work-policy.md"
+      ],
+      "retrieved_sources": [
+        "remote-work-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 23.02,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 26.701,
+      "answer": "10:00；16:00；核心。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "remote-work-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "core-hours-4",
+      "question": "请给出远程工作制度规定的核心工作起止时间。",
+      "answerable": true,
+      "relevant_sources": [
+        "remote-work-policy.md"
+      ],
+      "retrieved_sources": [
+        "remote-work-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 24.644,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 25.019,
+      "answer": "10:00；16:00；核心。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "remote-work-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "equipment-loss-1",
+      "question": "公司设备遗失后多久内向哪个部门报告？",
+      "answerable": true,
+      "relevant_sources": [
+        "remote-work-policy.md"
+      ],
+      "retrieved_sources": [
+        "remote-work-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 23.811,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 26.435,
+      "answer": "24；信息技术；设备。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "remote-work-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "equipment-loss-2",
+      "question": "笔记本损坏的报告时限和负责部门是什么？",
+      "answerable": true,
+      "relevant_sources": [
+        "remote-work-policy.md"
+      ],
+      "retrieved_sources": [
+        "remote-work-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 24.22,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 24.319,
+      "answer": "24；信息技术；设备。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "remote-work-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "equipment-loss-3",
+      "question": "When must lost company equipment be reported and to whom?",
+      "answerable": true,
+      "relevant_sources": [
+        "remote-work-policy.md"
+      ],
+      "retrieved_sources": [
+        "remote-work-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 22.685,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 24.735,
+      "answer": "24；信息技术；设备。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "remote-work-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "equipment-loss-4",
+      "question": "远程办公设备发生损坏，应在几小时内通知哪个团队？",
+      "answerable": true,
+      "relevant_sources": [
+        "remote-work-policy.md"
+      ],
+      "retrieved_sources": [
+        "remote-work-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 22.583,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 24.676,
+      "answer": "24；信息技术；设备。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "remote-work-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "purchase-small-1",
+      "question": "不超过 5000 元的采购由谁批准？",
+      "answerable": true,
+      "relevant_sources": [
+        "procurement-policy.md"
+      ],
+      "retrieved_sources": [
+        "procurement-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 23.545,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 25.345,
+      "answer": "5,000；团队负责人；批准。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "procurement-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "purchase-small-2",
+      "question": "小额采购的金额上限和审批人是什么？",
+      "answerable": true,
+      "relevant_sources": [
+        "procurement-policy.md"
+      ],
+      "retrieved_sources": [
+        "procurement-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 22.676,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 25.633,
+      "answer": "5,000；团队负责人；批准。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "procurement-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "purchase-small-3",
+      "question": "Who approves a purchase up to 5,000 yuan?",
+      "answerable": true,
+      "relevant_sources": [
+        "procurement-policy.md"
+      ],
+      "retrieved_sources": [
+        "procurement-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 22.695,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 24.328,
+      "answer": "5,000；团队负责人；批准。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "procurement-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "purchase-small-4",
+      "question": "采购金额为 4800 元时需要哪一级批准？",
+      "answerable": true,
+      "relevant_sources": [
+        "procurement-policy.md"
+      ],
+      "retrieved_sources": [
+        "procurement-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 22.976,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 24.704,
+      "answer": "5,000；团队负责人；批准。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "procurement-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "purchase-medium-1",
+      "question": "两万元采购需要什么审批和报价材料？",
+      "answerable": true,
+      "relevant_sources": [
+        "procurement-policy.md"
+      ],
+      "retrieved_sources": [
+        "procurement-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 21.496,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 25.542,
+      "answer": "50,000；总监；三；报价。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "procurement-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "purchase-medium-2",
+      "question": "超过 5000 元但不超过 50000 元的采购要求是什么？",
+      "answerable": true,
+      "relevant_sources": [
+        "procurement-policy.md"
+      ],
+      "retrieved_sources": [
+        "procurement-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 24.489,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 25.088,
+      "answer": "50,000；总监；三；报价。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "procurement-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "purchase-medium-3",
+      "question": "What is required for a purchase between 5,000 and 50,000 yuan?",
+      "answerable": true,
+      "relevant_sources": [
+        "procurement-policy.md"
+      ],
+      "retrieved_sources": [
+        "procurement-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 21.994,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 26.045,
+      "answer": "50,000；总监；三；报价。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "procurement-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "purchase-medium-4",
+      "question": "采购 30000 元设备，需要谁批准并收集几份报价？",
+      "answerable": true,
+      "relevant_sources": [
+        "procurement-policy.md"
+      ],
+      "retrieved_sources": [
+        "procurement-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 23.126,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 24.607,
+      "answer": "50,000；总监；三；报价。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "procurement-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "purchase-large-1",
+      "question": "超过 50000 元的采购由谁审核？",
+      "answerable": true,
+      "relevant_sources": [
+        "procurement-policy.md"
+      ],
+      "retrieved_sources": [
+        "procurement-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 22.377,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 25.518,
+      "answer": "50,000；采购委员会；审核。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "procurement-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "purchase-large-2",
+      "question": "大额采购触发采购委员会审核的金额条件是什么？",
+      "answerable": true,
+      "relevant_sources": [
+        "procurement-policy.md"
+      ],
+      "retrieved_sources": [
+        "procurement-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 23.611,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 24.328,
+      "answer": "50,000；采购委员会；审核。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "procurement-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "purchase-large-3",
+      "question": "Who reviews purchases above 50,000 yuan?",
+      "answerable": true,
+      "relevant_sources": [
+        "procurement-policy.md"
+      ],
+      "retrieved_sources": [
+        "procurement-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 22.251,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 25.238,
+      "answer": "50,000；采购委员会；审核。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "procurement-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "purchase-large-4",
+      "question": "六万元采购是否需要委员会审核？",
+      "answerable": true,
+      "relevant_sources": [
+        "procurement-policy.md"
+      ],
+      "retrieved_sources": [
+        "procurement-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 23.051,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 24.11,
+      "answer": "50,000；采购委员会；审核。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "procurement-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "contract-retention-1",
+      "question": "已签署客户合同需要保存多少年？",
+      "answerable": true,
+      "relevant_sources": [
+        "data-retention-policy.md"
+      ],
+      "retrieved_sources": [
+        "data-retention-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 21.952,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 25.294,
+      "answer": "7；年；合同。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "data-retention-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "contract-retention-2",
+      "question": "客户合同的规定保留期限是多久？",
+      "answerable": true,
+      "relevant_sources": [
+        "data-retention-policy.md"
+      ],
+      "retrieved_sources": [
+        "data-retention-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 22.463,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 26.363,
+      "answer": "7；年；合同。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "data-retention-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "contract-retention-3",
+      "question": "How long must signed customer contracts be retained?",
+      "answerable": true,
+      "relevant_sources": [
+        "data-retention-policy.md"
+      ],
+      "retrieved_sources": [
+        "data-retention-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 23.835,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 25.637,
+      "answer": "7；年；合同。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "data-retention-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "contract-retention-4",
+      "question": "签约文件归档后至少保留几年？",
+      "answerable": true,
+      "relevant_sources": [
+        "data-retention-policy.md"
+      ],
+      "retrieved_sources": [
+        "data-retention-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 21.708,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 26.999,
+      "answer": "7；年；合同。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "data-retention-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "audit-log-retention-1",
+      "question": "安全审计日志必须保留多久？",
+      "answerable": true,
+      "relevant_sources": [
+        "data-retention-policy.md"
+      ],
+      "retrieved_sources": [
+        "data-retention-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 23.311,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 25.073,
+      "answer": "2；年；审计日志。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "data-retention-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "audit-log-retention-2",
+      "question": "日志保留政策对安全审计记录规定了几年？",
+      "answerable": true,
+      "relevant_sources": [
+        "data-retention-policy.md"
+      ],
+      "retrieved_sources": [
+        "data-retention-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 22.159,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 25.256,
+      "answer": "2；年；审计日志。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "data-retention-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "audit-log-retention-3",
+      "question": "How long are security audit logs retained?",
+      "answerable": true,
+      "relevant_sources": [
+        "data-retention-policy.md"
+      ],
+      "retrieved_sources": [
+        "data-retention-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 23.425,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 27.151,
+      "answer": "2；年；审计日志。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "data-retention-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "audit-log-retention-4",
+      "question": "安全日志能否一年后删除？规定期限是多少？",
+      "answerable": true,
+      "relevant_sources": [
+        "data-retention-policy.md"
+      ],
+      "retrieved_sources": [
+        "data-retention-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 21.692,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 24.802,
+      "answer": "2；年；审计日志。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "data-retention-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "deletion-deadline-1",
+      "question": "获批的数据删除请求应在多久内完成？",
+      "answerable": true,
+      "relevant_sources": [
+        "data-retention-policy.md"
+      ],
+      "retrieved_sources": [
+        "data-retention-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 22.141,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 24.239,
+      "answer": "30；日历日；删除。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "data-retention-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "deletion-deadline-2",
+      "question": "数据删除申请批准后的处理时限是多少？",
+      "answerable": true,
+      "relevant_sources": [
+        "data-retention-policy.md"
+      ],
+      "retrieved_sources": [
+        "data-retention-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 22.121,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 25.062,
+      "answer": "30；日历日；删除。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "data-retention-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "deletion-deadline-3",
+      "question": "When must an approved deletion request be completed?",
+      "answerable": true,
+      "relevant_sources": [
+        "data-retention-policy.md"
+      ],
+      "retrieved_sources": [
+        "data-retention-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 21.828,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 23.81,
+      "answer": "30；日历日；删除。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "data-retention-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "deletion-deadline-4",
+      "question": "批准删除数据后，最多可以等待几个日历日？",
+      "answerable": true,
+      "relevant_sources": [
+        "data-retention-policy.md"
+      ],
+      "retrieved_sources": [
+        "data-retention-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 22.264,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 24.163,
+      "answer": "30；日历日；删除。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "data-retention-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "meal-cap-1",
+      "question": "每日餐费补贴上限是多少？",
+      "answerable": true,
+      "relevant_sources": [
+        "employee-expense-policy.md"
+      ],
+      "retrieved_sources": [
+        "employee-expense-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 22.485,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 24.378,
+      "answer": "120；餐费；上限。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "employee-expense-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "meal-cap-2",
+      "question": "员工一天最多能报销多少餐费？",
+      "answerable": true,
+      "relevant_sources": [
+        "employee-expense-policy.md"
+      ],
+      "retrieved_sources": [
+        "employee-expense-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 22.733,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 23.56,
+      "answer": "120；餐费；上限。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "employee-expense-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "meal-cap-3",
+      "question": "What is the daily meal allowance cap?",
+      "answerable": true,
+      "relevant_sources": [
+        "employee-expense-policy.md"
+      ],
+      "retrieved_sources": [
+        "employee-expense-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 22.797,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 25.6,
+      "answer": "120；餐费；上限。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "employee-expense-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "meal-cap-4",
+      "question": "出差当天餐费 150 元是否全部在补贴上限内？",
+      "answerable": true,
+      "relevant_sources": [
+        "employee-expense-policy.md"
+      ],
+      "retrieved_sources": [
+        "employee-expense-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 22.863,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 24.568,
+      "answer": "120；餐费；上限。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "employee-expense-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "late-taxi-1",
+      "question": "晚上几点后的出租车费可以凭业务原因报销？",
+      "answerable": true,
+      "relevant_sources": [
+        "employee-expense-policy.md"
+      ],
+      "retrieved_sources": [
+        "employee-expense-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 22.367,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 24.957,
+      "answer": "22:00；业务原因；出租车。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "employee-expense-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "late-taxi-2",
+      "question": "深夜打车报销需要满足什么时间和说明条件？",
+      "answerable": true,
+      "relevant_sources": [
+        "employee-expense-policy.md"
+      ],
+      "retrieved_sources": [
+        "employee-expense-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 22.506,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 24.38,
+      "answer": "22:00；业务原因；出租车。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "employee-expense-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "late-taxi-3",
+      "question": "When may a late-night taxi fare be reimbursed?",
+      "answerable": true,
+      "relevant_sources": [
+        "employee-expense-policy.md"
+      ],
+      "retrieved_sources": [
+        "employee-expense-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 24.448,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 25.096,
+      "answer": "22:00；业务原因；出租车。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "employee-expense-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "late-taxi-4",
+      "question": "员工 23 点打车回家，报销时必须记录什么？",
+      "answerable": true,
+      "relevant_sources": [
+        "employee-expense-policy.md"
+      ],
+      "retrieved_sources": [
+        "employee-expense-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 22.201,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 29.386,
+      "answer": "22:00；业务原因；出租车。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "employee-expense-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "entertainment-approval-1",
+      "question": "客户招待费用需要何时取得什么批准？",
+      "answerable": true,
+      "relevant_sources": [
+        "employee-expense-policy.md"
+      ],
+      "retrieved_sources": [
+        "employee-expense-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 23.213,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 24.514,
+      "answer": "活动前；书面；批准。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "employee-expense-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "entertainment-approval-2",
+      "question": "招待客户前必须完成哪种审批？",
+      "answerable": true,
+      "relevant_sources": [
+        "employee-expense-policy.md"
+      ],
+      "retrieved_sources": [
+        "employee-expense-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 21.919,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 25.238,
+      "answer": "活动前；书面；批准。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "employee-expense-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "entertainment-approval-3",
+      "question": "What approval is required for client entertainment expenses?",
+      "answerable": true,
+      "relevant_sources": [
+        "employee-expense-policy.md"
+      ],
+      "retrieved_sources": [
+        "employee-expense-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 24.343,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 27.177,
+      "answer": "活动前；书面；批准。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "employee-expense-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "entertainment-approval-4",
+      "question": "客户活动结束后再补口头批准是否符合制度？",
+      "answerable": true,
+      "relevant_sources": [
+        "employee-expense-policy.md"
+      ],
+      "retrieved_sources": [
+        "employee-expense-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 23.502,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 26.441,
+      "answer": "活动前；书面；批准。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "employee-expense-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "training-deadline-1",
+      "question": "新员工应在几个工作日内完成必修培训？",
+      "answerable": true,
+      "relevant_sources": [
+        "onboarding-policy.md"
+      ],
+      "retrieved_sources": [
+        "onboarding-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 23.745,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 26.07,
+      "answer": "5；工作日；培训。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "onboarding-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "training-deadline-2",
+      "question": "入职培训的完成期限是什么？",
+      "answerable": true,
+      "relevant_sources": [
+        "onboarding-policy.md"
+      ],
+      "retrieved_sources": [
+        "onboarding-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 22.299,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 24.99,
+      "answer": "5；工作日；培训。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "onboarding-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "training-deadline-3",
+      "question": "When must mandatory onboarding training be completed?",
+      "answerable": true,
+      "relevant_sources": [
+        "onboarding-policy.md"
+      ],
+      "retrieved_sources": [
+        "onboarding-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 21.957,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 25.755,
+      "answer": "5；工作日；培训。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "onboarding-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "training-deadline-4",
+      "question": "新人入职第几工作日前要完成规定课程？",
+      "answerable": true,
+      "relevant_sources": [
+        "onboarding-policy.md"
+      ],
+      "retrieved_sources": [
+        "onboarding-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 23.118,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 24.645,
+      "answer": "5；工作日；培训。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "onboarding-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "probation-period-1",
+      "question": "标准试用期是多长？",
+      "answerable": true,
+      "relevant_sources": [
+        "onboarding-policy.md"
+      ],
+      "retrieved_sources": [
+        "onboarding-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 22.487,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 24.873,
+      "answer": "3；个月；试用期。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "onboarding-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "probation-period-2",
+      "question": "新员工通常需要经过几个月试用？",
+      "answerable": true,
+      "relevant_sources": [
+        "onboarding-policy.md"
+      ],
+      "retrieved_sources": [
+        "onboarding-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 23.076,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 24.902,
+      "answer": "3；个月；试用期。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "onboarding-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "probation-period-3",
+      "question": "What is the standard probation period?",
+      "answerable": true,
+      "relevant_sources": [
+        "onboarding-policy.md"
+      ],
+      "retrieved_sources": [
+        "onboarding-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 23.156,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 25.074,
+      "answer": "3；个月；试用期。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "onboarding-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "probation-period-4",
+      "question": "公司规定的正常试用期是多少个月？",
+      "answerable": true,
+      "relevant_sources": [
+        "onboarding-policy.md"
+      ],
+      "retrieved_sources": [
+        "onboarding-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 23.169,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 24.457,
+      "answer": "3；个月；试用期。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "onboarding-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "laptop-return-1",
+      "question": "离职员工最迟何时归还公司笔记本？",
+      "answerable": true,
+      "relevant_sources": [
+        "onboarding-policy.md"
+      ],
+      "retrieved_sources": [
+        "onboarding-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 22.047,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 24.842,
+      "answer": "最后一个工作日；笔记本；归还。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "onboarding-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "laptop-return-2",
+      "question": "公司电脑的离职归还截止点是什么？",
+      "answerable": true,
+      "relevant_sources": [
+        "onboarding-policy.md"
+      ],
+      "retrieved_sources": [
+        "onboarding-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 22.008,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 24.724,
+      "answer": "最后一个工作日；笔记本；归还。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "onboarding-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "laptop-return-3",
+      "question": "When must a departing employee return the company laptop?",
+      "answerable": true,
+      "relevant_sources": [
+        "onboarding-policy.md"
+      ],
+      "retrieved_sources": [
+        "onboarding-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 22.217,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 24.512,
+      "answer": "最后一个工作日；笔记本；归还。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "onboarding-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "laptop-return-4",
+      "question": "员工离职后一周再还电脑是否符合制度？正确时间是什么？",
+      "answerable": true,
+      "relevant_sources": [
+        "onboarding-policy.md"
+      ],
+      "retrieved_sources": [
+        "onboarding-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 23.489,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 25.154,
+      "answer": "最后一个工作日；笔记本；归还。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "onboarding-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "sev1-ack-1",
+      "question": "一级事故必须在多久内确认？",
+      "answerable": true,
+      "relevant_sources": [
+        "incident-response-policy.md"
+      ],
+      "retrieved_sources": [
+        "incident-response-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 21.845,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 23.8,
+      "answer": "15；分钟；一级。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "incident-response-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "sev1-ack-2",
+      "question": "最高严重级别事故的响应确认时限是多少？",
+      "answerable": true,
+      "relevant_sources": [
+        "incident-response-policy.md"
+      ],
+      "retrieved_sources": [
+        "incident-response-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 22.626,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 25.213,
+      "answer": "15；分钟；一级。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "incident-response-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "sev1-ack-3",
+      "question": "How quickly must a severity-one incident be acknowledged?",
+      "answerable": true,
+      "relevant_sources": [
+        "incident-response-policy.md"
+      ],
+      "retrieved_sources": [
+        "incident-response-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 21.849,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 25.485,
+      "answer": "15；分钟；一级。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "incident-response-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "sev1-ack-4",
+      "question": "发生一级故障后，团队最多有几分钟确认？",
+      "answerable": true,
+      "relevant_sources": [
+        "incident-response-policy.md"
+      ],
+      "retrieved_sources": [
+        "incident-response-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 23.33,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 24.62,
+      "answer": "15；分钟；一级。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "incident-response-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "sev1-update-1",
+      "question": "一级事故处理中多久发布一次状态更新？",
+      "answerable": true,
+      "relevant_sources": [
+        "incident-response-policy.md"
+      ],
+      "retrieved_sources": [
+        "incident-response-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 22.889,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 24.941,
+      "answer": "30；分钟；状态。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "incident-response-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "sev1-update-2",
+      "question": "重大故障的进展通报频率是什么？",
+      "answerable": true,
+      "relevant_sources": [
+        "incident-response-policy.md"
+      ],
+      "retrieved_sources": [
+        "incident-response-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 23.313,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 25.922,
+      "answer": "30；分钟；状态。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "incident-response-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "sev1-update-3",
+      "question": "How often are status updates required during a severity-one incident?",
+      "answerable": true,
+      "relevant_sources": [
+        "incident-response-policy.md"
+      ],
+      "retrieved_sources": [
+        "incident-response-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 23.317,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 25.591,
+      "answer": "30；分钟；状态。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "incident-response-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "sev1-update-4",
+      "question": "一级事故尚未解决时，每隔多少分钟更新情况？",
+      "answerable": true,
+      "relevant_sources": [
+        "incident-response-policy.md"
+      ],
+      "retrieved_sources": [
+        "incident-response-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 23.374,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 26.354,
+      "answer": "30；分钟；状态。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "incident-response-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "root-cause-1",
+      "question": "事故解决后多久内完成根因分析？",
+      "answerable": true,
+      "relevant_sources": [
+        "incident-response-policy.md"
+      ],
+      "retrieved_sources": [
+        "incident-response-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 23.812,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 24.272,
+      "answer": "5；工作日；根因。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "incident-response-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "root-cause-2",
+      "question": "故障复盘中的根因分析截止时间是什么？",
+      "answerable": true,
+      "relevant_sources": [
+        "incident-response-policy.md"
+      ],
+      "retrieved_sources": [
+        "incident-response-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 25.178,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 25.689,
+      "answer": "5；工作日；根因。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "incident-response-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "root-cause-3",
+      "question": "When must the root-cause analysis be completed after resolution?",
+      "answerable": true,
+      "relevant_sources": [
+        "incident-response-policy.md"
+      ],
+      "retrieved_sources": [
+        "incident-response-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 22.209,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 24.79,
+      "answer": "5；工作日；根因。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "incident-response-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "root-cause-4",
+      "question": "事故关闭后，团队有几个工作日提交根因分析？",
+      "answerable": true,
+      "relevant_sources": [
+        "incident-response-policy.md"
+      ],
+      "retrieved_sources": [
+        "incident-response-policy.md"
+      ],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": true,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.99,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 23.006,
+      "retrieval": {
+        "precision_at_k": 1.0,
+        "recall_at_k": 1.0,
+        "reciprocal_rank": 1.0,
+        "ndcg_at_k": 1.0,
+        "hit_at_k": 1.0
+      },
+      "answer_latency_ms": 29.609,
+      "answer": "5；工作日；根因。[S1]",
+      "refused": false,
+      "cited_sources": [
+        "incident-response-policy.md"
+      ],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": 1.0,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "unanswerable-catering-budget",
+      "question": "公司周五下午茶的预算是多少？",
+      "answerable": false,
+      "relevant_sources": [],
+      "retrieved_sources": [],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": false,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.1,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 21.899,
+      "retrieval": null,
+      "answer_latency_ms": 21.735,
+      "answer": "根据当前知识库内容，我无法回答这个问题。",
+      "refused": true,
+      "cited_sources": [],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": null,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "unanswerable-parking-spaces",
+      "question": "新员工可以申请几个免费停车位？",
+      "answerable": false,
+      "relevant_sources": [],
+      "retrieved_sources": [],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": false,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.1,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 19.899,
+      "retrieval": null,
+      "answer_latency_ms": 20.773,
+      "answer": "根据当前知识库内容，我无法回答这个问题。",
+      "refused": true,
+      "cited_sources": [],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": null,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "unanswerable-gym-hours",
+      "question": "公司健身房周末几点开放？",
+      "answerable": false,
+      "relevant_sources": [],
+      "retrieved_sources": [],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": false,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.1,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 19.342,
+      "retrieval": null,
+      "answer_latency_ms": 20.908,
+      "answer": "根据当前知识库内容，我无法回答这个问题。",
+      "refused": true,
+      "cited_sources": [],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": null,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "unanswerable-pet-policy",
+      "question": "办公室是否允许员工携带宠物？",
+      "answerable": false,
+      "relevant_sources": [],
+      "retrieved_sources": [],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": false,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.1,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 19.185,
+      "retrieval": null,
+      "answer_latency_ms": 20.809,
+      "answer": "根据当前知识库内容，我无法回答这个问题。",
+      "refused": true,
+      "cited_sources": [],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": null,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "unanswerable-birthday-leave",
+      "question": "员工生日当天可以休假吗？",
+      "answerable": false,
+      "relevant_sources": [],
+      "retrieved_sources": [],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": false,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.1,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 18.896,
+      "retrieval": null,
+      "answer_latency_ms": 20.758,
+      "answer": "根据当前知识库内容，我无法回答这个问题。",
+      "refused": true,
+      "cited_sources": [],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": null,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "unanswerable-stock-options",
+      "question": "员工股票期权每年归属多少比例？",
+      "answerable": false,
+      "relevant_sources": [],
+      "retrieved_sources": [],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": false,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.1,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 19.096,
+      "retrieval": null,
+      "answer_latency_ms": 20.939,
+      "answer": "根据当前知识库内容，我无法回答这个问题。",
+      "refused": true,
+      "cited_sources": [],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": null,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "unanswerable-health-insurance",
+      "question": "商业医疗保险的年度免赔额是多少？",
+      "answerable": false,
+      "relevant_sources": [],
+      "retrieved_sources": [],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": false,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.1,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 19.064,
+      "retrieval": null,
+      "answer_latency_ms": 20.457,
+      "answer": "根据当前知识库内容，我无法回答这个问题。",
+      "refused": true,
+      "cited_sources": [],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": null,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "unanswerable-relocation",
+      "question": "异地搬迁补贴最高多少钱？",
+      "answerable": false,
+      "relevant_sources": [],
+      "retrieved_sources": [],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": false,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.1,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 19.099,
+      "retrieval": null,
+      "answer_latency_ms": 20.273,
+      "answer": "根据当前知识库内容，我无法回答这个问题。",
+      "refused": true,
+      "cited_sources": [],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": null,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "unanswerable-tuition",
+      "question": "公司每年报销多少学费？",
+      "answerable": false,
+      "relevant_sources": [],
+      "retrieved_sources": [],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": false,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.1,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 19.722,
+      "retrieval": null,
+      "answer_latency_ms": 20.476,
+      "answer": "根据当前知识库内容，我无法回答这个问题。",
+      "refused": true,
+      "cited_sources": [],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": null,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "unanswerable-phone-allowance",
+      "question": "个人手机通讯补贴每月是多少？",
+      "answerable": false,
+      "relevant_sources": [],
+      "retrieved_sources": [],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": false,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.1,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 20.508,
+      "retrieval": null,
+      "answer_latency_ms": 19.899,
+      "answer": "根据当前知识库内容，我无法回答这个问题。",
+      "refused": true,
+      "cited_sources": [],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": null,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "unanswerable-dress-code",
+      "question": "周五是否必须穿商务正装？",
+      "answerable": false,
+      "relevant_sources": [],
+      "retrieved_sources": [],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": false,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.1,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 20.065,
+      "retrieval": null,
+      "answer_latency_ms": 20.755,
+      "answer": "根据当前知识库内容，我无法回答这个问题。",
+      "refused": true,
+      "cited_sources": [],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": null,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "unanswerable-office-snacks",
+      "question": "茶水间零食每天几点补充？",
+      "answerable": false,
+      "relevant_sources": [],
+      "retrieved_sources": [],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": false,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.1,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 19.61,
+      "retrieval": null,
+      "answer_latency_ms": 21.197,
+      "answer": "根据当前知识库内容，我无法回答这个问题。",
+      "refused": true,
+      "cited_sources": [],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": null,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "unanswerable-shuttle-route",
+      "question": "公司班车经过哪些地铁站？",
+      "answerable": false,
+      "relevant_sources": [],
+      "retrieved_sources": [],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": false,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.1,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 19.267,
+      "retrieval": null,
+      "answer_latency_ms": 20.757,
+      "answer": "根据当前知识库内容，我无法回答这个问题。",
+      "refused": true,
+      "cited_sources": [],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": null,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "unanswerable-holiday-bonus",
+      "question": "春节奖金按几个月工资发放？",
+      "answerable": false,
+      "relevant_sources": [],
+      "retrieved_sources": [],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": false,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.1,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 19.743,
+      "retrieval": null,
+      "answer_latency_ms": 21.478,
+      "answer": "根据当前知识库内容，我无法回答这个问题。",
+      "refused": true,
+      "cited_sources": [],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": null,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "unanswerable-overtime-rate",
+      "question": "周末加班按多少倍工资支付？",
+      "answerable": false,
+      "relevant_sources": [],
+      "retrieved_sources": [],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": false,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.1,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 20.399,
+      "retrieval": null,
+      "answer_latency_ms": 20.088,
+      "answer": "根据当前知识库内容，我无法回答这个问题。",
+      "refused": true,
+      "cited_sources": [],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": null,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "unanswerable-meeting-room",
+      "question": "会议室最长可以连续预订几小时？",
+      "answerable": false,
+      "relevant_sources": [],
+      "retrieved_sources": [],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": false,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.1,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 21.858,
+      "retrieval": null,
+      "answer_latency_ms": 21.579,
+      "answer": "根据当前知识库内容，我无法回答这个问题。",
+      "refused": true,
+      "cited_sources": [],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": null,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "unanswerable-visitor-parking",
+      "question": "客户来访停车费由谁承担？",
+      "answerable": false,
+      "relevant_sources": [],
+      "retrieved_sources": [],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": false,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.1,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 19.215,
+      "retrieval": null,
+      "answer_latency_ms": 20.951,
+      "answer": "根据当前知识库内容，我无法回答这个问题。",
+      "refused": true,
+      "cited_sources": [],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": null,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "unanswerable-home-internet",
+      "question": "远程办公宽带每月补贴多少？",
+      "answerable": false,
+      "relevant_sources": [],
+      "retrieved_sources": [],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": false,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.1,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 19.784,
+      "retrieval": null,
+      "answer_latency_ms": 20.846,
+      "answer": "根据当前知识库内容，我无法回答这个问题。",
+      "refused": true,
+      "cited_sources": [],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": null,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "unanswerable-conference-budget",
+      "question": "参加外部技术大会的预算上限是多少？",
+      "answerable": false,
+      "relevant_sources": [],
+      "retrieved_sources": [],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": false,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.1,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 19.041,
+      "retrieval": null,
+      "answer_latency_ms": 21.952,
+      "answer": "根据当前知识库内容，我无法回答这个问题。",
+      "refused": true,
+      "cited_sources": [],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": null,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "unanswerable-language-course",
+      "question": "公司报销哪些外语课程？",
+      "answerable": false,
+      "relevant_sources": [],
+      "retrieved_sources": [],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": false,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.1,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 21.841,
+      "retrieval": null,
+      "answer_latency_ms": 21.343,
+      "answer": "根据当前知识库内容，我无法回答这个问题。",
+      "refused": true,
+      "cited_sources": [],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": null,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "unanswerable-coffee-machine",
+      "question": "咖啡机清洁由哪个团队负责？",
+      "answerable": false,
+      "relevant_sources": [],
+      "retrieved_sources": [],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": false,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.1,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 19.027,
+      "retrieval": null,
+      "answer_latency_ms": 22.209,
+      "answer": "根据当前知识库内容，我无法回答这个问题。",
+      "refused": true,
+      "cited_sources": [],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": null,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "unanswerable-childcare",
+      "question": "员工子女托管补贴标准是多少？",
+      "answerable": false,
+      "relevant_sources": [],
+      "retrieved_sources": [],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": false,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.1,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 23.595,
+      "retrieval": null,
+      "answer_latency_ms": 23.59,
+      "answer": "根据当前知识库内容，我无法回答这个问题。",
+      "refused": true,
+      "cited_sources": [],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": null,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "unanswerable-uniform",
+      "question": "前台制服多久更换一次？",
+      "answerable": false,
+      "relevant_sources": [],
+      "retrieved_sources": [],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": false,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.1,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 22.225,
+      "retrieval": null,
+      "answer_latency_ms": 20.567,
+      "answer": "根据当前知识库内容，我无法回答这个问题。",
+      "refused": true,
+      "cited_sources": [],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": null,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "unanswerable-mobile-device",
+      "question": "公司是否为所有员工配发手机？",
+      "answerable": false,
+      "relevant_sources": [],
+      "retrieved_sources": [],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": false,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.1,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 19.258,
+      "retrieval": null,
+      "answer_latency_ms": 21.493,
+      "answer": "根据当前知识库内容，我无法回答这个问题。",
+      "refused": true,
+      "cited_sources": [],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": null,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "unanswerable-volunteer-leave",
+      "question": "志愿服务假每年有几天？",
+      "answerable": false,
+      "relevant_sources": [],
+      "retrieved_sources": [],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": false,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.1,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 19.327,
+      "retrieval": null,
+      "answer_latency_ms": 20.876,
+      "answer": "根据当前知识库内容，我无法回答这个问题。",
+      "refused": true,
+      "cited_sources": [],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": null,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "unanswerable-music-license",
+      "question": "办公室播放音乐需要购买哪种许可证？",
+      "answerable": false,
+      "relevant_sources": [],
+      "retrieved_sources": [],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": false,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.1,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 22.233,
+      "retrieval": null,
+      "answer_latency_ms": 23.73,
+      "answer": "根据当前知识库内容，我无法回答这个问题。",
+      "refused": true,
+      "cited_sources": [],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": null,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    },
+    {
+      "id": "unanswerable-canteen-menu",
+      "question": "员工食堂下周一供应什么菜？",
+      "answerable": false,
+      "relevant_sources": [],
+      "retrieved_sources": [],
+      "rerank_model": "reference-deterministic-rerank-v1",
+      "evidence_sufficient": false,
+      "evidence_threshold": 0.54,
+      "top_rerank_score": 0.1,
+      "evidence_decision_correct": 1.0,
+      "retrieval_latency_ms": 21.039,
+      "retrieval": null,
+      "answer_latency_ms": 22.128,
+      "answer": "根据当前知识库内容，我无法回答这个问题。",
+      "refused": true,
+      "cited_sources": [],
+      "model": "reference-deterministic-v1",
+      "answer_scores": {
+        "citation_precision": 1.0,
+        "citation_recall": 1.0,
+        "answer_term_coverage": null,
+        "refusal_correct": 1.0,
+        "grounded_answer": 1.0
+      }
+    }
+  ]
+}

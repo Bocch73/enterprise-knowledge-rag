@@ -38,6 +38,8 @@ class FusedCandidate:
     vector_distance: float | None
     keyword_rank: int | None
     keyword_score: float | None
+    rerank_rank: int | None = None
+    rerank_score: float | None = None
 
 
 @dataclass(slots=True)

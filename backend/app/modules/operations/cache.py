@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from collections import OrderedDict
-from collections.abc import Callable, Sequence
+from collections.abc import Awaitable, Callable, Sequence
 from dataclasses import dataclass
 from hashlib import sha256
 from time import monotonic
@@ -77,7 +77,28 @@ class CachingEmbeddingProvider:
         self.dimensions = delegate.dimensions
 
     async def embed_documents(self, texts: Sequence[str]) -> list[list[float]]:
-        keys = [self._key(text) for text in texts]
+        return await self._embed_many("document", texts, self._delegate.embed_documents)
+
+    async def embed_query(self, text: str) -> list[float]:
+        vectors = await self._embed_many(
+            "query",
+            [text],
+            lambda texts: self._embed_query_batch(texts),
+        )
+        return vectors[0]
+
+    async def _embed_query_batch(self, texts: Sequence[str]) -> list[list[float]]:
+        if len(texts) != 1:
+            raise RuntimeError("query embedding cache accepts one query at a time")
+        return [await self._delegate.embed_query(texts[0])]
+
+    async def _embed_many(
+        self,
+        kind: str,
+        texts: Sequence[str],
+        embed: Callable[[Sequence[str]], Awaitable[list[list[float]]]],
+    ) -> list[list[float]]:
+        keys = [self._key(kind, text) for text in texts]
         results: list[list[float] | None] = []
         for key in keys:
             cached = await self._cache.get(key)
@@ -98,9 +119,7 @@ class CachingEmbeddingProvider:
                     missing_by_key.setdefault(key, texts[index])
             if missing_by_key:
                 missing_keys = list(missing_by_key)
-                vectors = await self._delegate.embed_documents(
-                    [missing_by_key[key] for key in missing_keys]
-                )
+                vectors = await embed([missing_by_key[key] for key in missing_keys])
                 if len(vectors) != len(missing_keys):
                     raise RuntimeError("embedding provider returned an invalid cache-fill batch")
                 for key, vector in zip(missing_keys, vectors, strict=True):
@@ -113,5 +132,5 @@ class CachingEmbeddingProvider:
             raise RuntimeError("embedding cache fill did not produce every requested vector")
         return [list(result) for result in results if result is not None]
 
-    def _key(self, text: str) -> str:
-        return sha256(f"{self.name}\0{text}".encode()).hexdigest()
+    def _key(self, kind: str, text: str) -> str:
+        return sha256(f"{self.name}\0{kind}\0{text}".encode()).hexdigest()
