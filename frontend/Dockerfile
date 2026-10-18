@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.7
 
-FROM node:24.19.0-alpine3.23 AS frontend-builder
+FROM node:26.12.0-alpine3.23 AS frontend-builder
 
 WORKDIR /build
 COPY package.json package-lock.json ./
